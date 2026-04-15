@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Tool Repository</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>AI Tool Recommender</h1>
+    <div class="search-box">
+        <input type="text" id="userInput" placeholder="e.g., I want to create a logo">
+        <button onclick="findTools()">Suggest Tools</button>
+    </div>
+    <div id="results" class="results-grid"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+Step 4: Add the "Suggestion Logic" (script.js)
+This is the brain that connects what the user types to the tools in your list.
+
+Create a new file named script.js.
+
+Add this code to handle the search logic:
+
+JavaScript
+async function findTools() {
+    const response = await fetch('tools.json');
+    const tools = await response.json();
+    const input = document.getElementById('userInput').value.toLowerCase();
+    const resultsDiv = document.getElementById('results');
+    
+    // Clear previous results
+    resultsDiv.innerHTML = '';
+
+    // Filter tools based on keywords in tags or description
+    const matches = tools.filter(tool => {
+        return tool.tags.some(tag => input.includes(tag)) || 
+               tool.description.toLowerCase().includes(input);
+    });
+
+    // Display the tools
+    matches.forEach(tool => {
+        resultsDiv.innerHTML += `
+            <div class="card">
+                <h3>${tool.name}</h3>
+                <p>${tool.description}</p>
+                <a href="${tool.url}" target="_blank">Visit Tool</a>
+            </div>
+        `;
+    });
+
+    if(matches.length === 0) {
+        resultsDiv.innerHTML = '<p>No tools found. Try searching for "logo" or "writing".</p>';
+    }
+}
