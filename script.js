@@ -1,30 +1,85 @@
+const SUPABASE_URL = 'https://eorcxcwhvmpbiaewtuug.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_sYb_PH5RLuqnLuUM8CxlKA_0IbZv5OW';
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 async function findTools() {
-    const response = await fetch('tools.json');
-    const tools = await response.json();
     const input = document.getElementById('userInput').value.toLowerCase();
     const resultsDiv = document.getElementById('results');
     
-    // Clear previous results
-    resultsDiv.innerHTML = '';
+    resultsDiv.innerHTML = '<p>Searching the repository...</p>';
 
-    // Filter tools based on keywords in tags or description
+    let { data: tools, error } = await _supabase
+        .from('tools')
+        .select('*');
+
+    if (error) {
+        resultsDiv.innerHTML = '<p>Error connecting to database.</p>';
+        console.error(error);
+        return;
+    }
+
     const matches = tools.filter(tool => {
-        return tool.tags.some(tag => input.includes(tag)) || 
-               tool.description.toLowerCase().includes(input);
+        const nameMatch = tool.Name.toLowerCase().includes(input);
+        const descMatch = tool.Description.toLowerCase().includes(input);
+
+        
+        const tagMatch = tool.Tag && tool.Tag.some(t => input.includes(t.toLowerCase()));
+        
+        return nameMatch || descMatch || tagMatch;
     });
 
-    // Display the tools
-    matches.forEach(tool => {
-        resultsDiv.innerHTML += `
-            <div class="card">
-                <h3>${tool.name}</h3>
-                <p>${tool.description}</p>
-                <a href="${tool.url}" target="_blank">Visit Tool</a>
-            </div>
-        `;
-    });
+    
+    resultsDiv.innerHTML = '';
+    if (matches.length === 0) {
+        resultsDiv.innerHTML = '<p>No tools found for that need. Try "logo" or "writing".</p>';
+    } else {
+        matches.forEach(tool => {
+            resultsDiv.innerHTML += `
+                <div class="card">
+                    <h3>${tool.Name}</h3>
+                    <span class="category-badge">${tool.Category}</span>
+                    <p>${tool.Description}</p>
+                    <a href="${tool.URL}" target="_blank">Open Tool</a>
+                </div>
+            `;
+        });
+    }
+}
 
-    if(matches.length === 0) {
-        resultsDiv.innerHTML = '<p>No tools found. Try searching for "logo" or "writing".</p>';
+
+async function addNewTool() {
+    const name = document.getElementById('addName').value;
+    const desc = document.getElementById('addDesc').value;
+    const cat = document.getElementById('addCat').value;
+    const url = document.getElementById('addUrl').value;
+    
+    const tags = document.getElementById('addTags').value.split(',').map(t => t.trim());
+
+    if(!name || !url) {
+        alert("Please enter at least a Name and URL");
+        return;
+    }
+
+    const { data, error } = await _supabase
+        .from('tools')
+        .insert([
+            { 
+                Name: name, 
+                Description: desc, 
+                Category: cat, 
+                URL: url, 
+                Tag: tags 
+            }
+        ]);
+
+    if (error) {
+        alert("Error: " + error.message);
+    } else {
+        alert("Tool added successfully!");
+
+        
+        document.getElementById('addName').value = '';
+        document.getElementById('addDesc').value = '';
+        location.reload(); 
     }
 }
