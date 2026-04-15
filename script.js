@@ -1,5 +1,5 @@
 const SUPABASE_URL = 'https://eorcxcwhvmpbiaewtuug.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_sYb_PH5RLuqnLuUM8CxlKA_0IbZv5OW';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvcmN4Y3dodm1wYmlhZXd0dXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNTE3MzgsImV4cCI6MjA5MTcyNzczOH0.XjlCbmNIJZPisc3EhRrOlFKlihLUPBlmwrCV_JXiRuc';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function findTools() {
