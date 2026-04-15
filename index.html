@@ -1,31 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AI Tool Repository</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tool Registry</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>AI Tool Recommender</h1>
-    <div class="search-box">
-        <input type="text" id="userInput" placeholder="e.g., I want to create a logo">
-        <button onclick="findTools()">Suggest Tools</button>
-    </div>
-    <div id="results" class="results-grid"></div>
+
+    <header>
+        <h1>AI Tool Explorer</h1>
+        <div class="search-box">
+            <input type="text" id="userInput" placeholder="I want to build a website...">
+            <button onclick="findTools()">Search</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="results" class="results-grid">
+            <p class="placeholder-text">Discover AI tools by searching above.</p>
+        </div>
+
+        <section class="add-section">
+            <h2>Add to Repository</h2>
+            <div class="form-container">
+                <div class="input-group">
+                    <input type="text" id="addName" placeholder="Tool Name">
+                    <input type="text" id="addCat" placeholder="Category">
+                </div>
+                <input type="text" id="addUrl" placeholder="URL (Unique)">
+                <input type="text" id="addTags" placeholder="Tags (comma separated)">
+                <textarea id="addDesc" placeholder="What does this tool do?"></textarea>
+                <button onclick="addNewTool()">Submit Tool</button>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
-
-
-    <div class="add-section">
-        <h2>Contribute to the Repo</h2>
-        <input type="text" id="addName" placeholder="Tool Name">
-        <input type="text" id="addCat" placeholder="Category (e.g. Design)">
-        <input type="text" id="addDesc" placeholder="Brief Description">
-        <input type="text" id="addUrl" placeholder="https://...">
-        <input type="text" id="addTags" placeholder="Tags (comma separated: logo, icon, ai)">
-        <button onclick="addNewTool()">Submit Tool</button>
-    </div>
-    
 </body>
 </html>
-
