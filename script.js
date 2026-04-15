@@ -13,7 +13,7 @@ async function findTools() {
 
     resultsDiv.innerHTML = '<p>Scouring the database...</p>';
 
-    let { data: tools, error } = await _supabase.from('tools').select('*');
+    let { data: tools, error } = await _supabase.from('tbl_AITools').select('*');
 
     if (error) {
         resultsDiv.innerHTML = '<p>Error: Could not connect to Supabase.</p>';
