@@ -1,7 +1,7 @@
 :root {
-    --primary-blue: #003366;    /* IWS Dark Blue */
-    --secondary-blue: #0056b3;  /* Secondary Blue */
-    --accent-orange: #ff7f00;   /* IWS Orange */
+    --primary-blue: #003366;
+    --secondary-blue: #0056b3; 
+    --accent-orange: #ff7f00;   
     --text-dark: #333333;
     --bg-light: #f4f7f9;
     --white: #ffffff;
