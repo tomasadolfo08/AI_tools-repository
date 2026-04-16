@@ -18,8 +18,18 @@
             <div class="search-container">
                 <select id="categorySelect">
                     <option value="all">All Categories</option>
+                    <option value="Writing & Content">Writing & Content</option>
+                    <option value="Image & Art">Image & Art</option>
+                    <option value="Video & Motion">Video & Motion</option>
+                    <option value="Audio & Voice">Audio & Voice</option>
+                    <option value="Code & Dev">Code & Dev</option>
+                    <option value="Business & Productivity">Business & Productivity</option>
+                    <option value="Marketing & Social">Marketing & Social</option>
+                    <option value="Chatbots & Agents">Chatbots & Agents</option>
+                    <option value="Research & Education">Research & Education</option>
+                    <option value="Life & Fun">Life & Fun</option>
                 </select>
-                <input type="text" id="userInput" placeholder="I want to build a website...">
+                <input type="text" id="userInput" placeholder="Search by name, description or tags...">
                 <button onclick="findTools()">Search</button>
             </div>
         </div>
@@ -27,20 +37,32 @@
 
     <main class="container">
         <div id="results" class="results-grid">
-            <p class="placeholder-text">Loading database...</p>
+            <p class="placeholder-text">Searching database...</p>
         </div>
 
         <hr class="section-divider">
 
         <section class="add-section">
             <h2>Add to Repository</h2>
-            <p>Help us grow the AI library by submitting a new tool.</p>
+            <p>Contribute a new AI tool to our directory using our verified categories.</p>
             <div class="form-container">
                 <div class="input-row">
                     <input type="text" id="addName" placeholder="Tool Name">
-                    <input type="text" id="addCat" placeholder="Category (e.g. Text, Image)">
+                    <select id="addCat">
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="Writing & Content">Writing & Content</option>
+                        <option value="Image & Art">Image & Art</option>
+                        <option value="Video & Motion">Video & Motion</option>
+                        <option value="Audio & Voice">Audio & Voice</option>
+                        <option value="Code & Dev">Code & Dev</option>
+                        <option value="Business & Productivity">Business & Productivity</option>
+                        <option value="Marketing & Social">Marketing & Social</option>
+                        <option value="Chatbots & Agents">Chatbots & Agents</option>
+                        <option value="Research & Education">Research & Education</option>
+                        <option value="Life & Fun">Life & Fun</option>
+                    </select>
                 </div>
-                <input type="text" id="addUrl" placeholder="Website URL">
+                <input type="text" id="addUrl" placeholder="Website URL (https://...)">
                 <input type="text" id="addTags" placeholder="Tags (comma separated)">
                 <textarea id="addDesc" placeholder="Describe what this tool does..."></textarea>
                 <button class="btn-submit" onclick="addNewTool()">Submit Tool</button>
@@ -49,7 +71,9 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 AI Tool Registry. Inspired by IWS Design.</p>
+        <div class="container">
+            <p>AI Tool Directory Explorer</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>
