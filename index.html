@@ -3,39 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Tool Registry</title>
+    <title>AI Tool Registry | Explorer</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header>
-        <h1>AI Tool Explorer</h1>
-        <div class="search-box">
-            <input type="text" id="userInput" placeholder="I want to build a website...">
-            <button onclick="findTools()">Search</button>
+        <div class="container">
+            <h1>AI Tool <span>Explorer</span></h1>
+            <p>Find the perfect artificial intelligence tools for your project</p>
+            
+            <div class="search-container">
+                <select id="categorySelect">
+                    <option value="all">All Categories</option>
+                </select>
+                <input type="text" id="userInput" placeholder="I want to build a website...">
+                <button onclick="findTools()">Search</button>
+            </div>
         </div>
     </header>
 
-    <main>
+    <main class="container">
         <div id="results" class="results-grid">
-            <p class="placeholder-text">Discover AI tools by searching above.</p>
+            <p class="placeholder-text">Loading database...</p>
         </div>
+
+        <hr class="section-divider">
 
         <section class="add-section">
             <h2>Add to Repository</h2>
+            <p>Help us grow the AI library by submitting a new tool.</p>
             <div class="form-container">
-                <div class="input-group">
+                <div class="input-row">
                     <input type="text" id="addName" placeholder="Tool Name">
-                    <input type="text" id="addCat" placeholder="Category">
+                    <input type="text" id="addCat" placeholder="Category (e.g. Text, Image)">
                 </div>
-                <input type="text" id="addUrl" placeholder="URL (Unique)">
+                <input type="text" id="addUrl" placeholder="Website URL">
                 <input type="text" id="addTags" placeholder="Tags (comma separated)">
-                <textarea id="addDesc" placeholder="What does this tool do?"></textarea>
-                <button onclick="addNewTool()">Submit Tool</button>
+                <textarea id="addDesc" placeholder="Describe what this tool does..."></textarea>
+                <button class="btn-submit" onclick="addNewTool()">Submit Tool</button>
             </div>
         </section>
     </main>
+
+    <footer>
+        <p>&copy; 2024 AI Tool Registry. Inspired by IWS Design.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
