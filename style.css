@@ -1,7 +1,7 @@
 :root {
-    --primary-blue: #003366;    /* Dark corporate blue */
-    --secondary-blue: #0056b3;  /* Lighter blue */
-    --accent-orange: #ff7f00;   /* IWS Orange accent */
+    --primary-blue: #003366;    /* IWS Dark Blue */
+    --secondary-blue: #0056b3;  /* Secondary Blue */
+    --accent-orange: #ff7f00;   /* IWS Orange */
     --text-dark: #333333;
     --bg-light: #f4f7f9;
     --white: #ffffff;
@@ -26,11 +26,11 @@ h1, h2, h3 {
     padding: 0 20px;
 }
 
-/* Header & Search */
+/* Header */
 header {
     background-color: var(--primary-blue);
     color: var(--white);
-    padding: 60px 0;
+    padding: 70px 0;
     text-align: center;
 }
 
@@ -38,28 +38,31 @@ header h1 span {
     color: var(--accent-orange);
 }
 
+/* Search Bar Hybrid */
 .search-container {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin-top: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     border-radius: 8px;
     overflow: hidden;
-    max-width: 700px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
 
 #categorySelect, #userInput {
-    padding: 15px;
+    padding: 18px;
     border: none;
     outline: none;
+    font-size: 1rem;
 }
 
 #categorySelect {
-    background: #eeeeee;
+    background: #f0f0f0;
     flex: 1;
     cursor: pointer;
+    font-weight: 600;
 }
 
 #userInput {
@@ -71,10 +74,9 @@ header button {
     background-color: var(--accent-orange);
     color: white;
     border: none;
-    padding: 0 30px;
+    padding: 0 35px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s;
 }
 
 header button:hover {
@@ -84,80 +86,86 @@ header button:hover {
 /* Results Grid */
 .results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 40px 0;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 50px 0;
 }
 
 .card {
     background: var(--white);
     padding: 25px;
-    border-radius: 8px;
-    border-top: 4px solid var(--secondary-blue);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    border-top: 5px solid var(--secondary-blue);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.card h3 { margin: 0 0 10px 0; }
 .badge {
     background: #eef2f7;
     color: var(--secondary-blue);
-    padding: 4px 10px;
-    font-size: 0.8rem;
-    border-radius: 4px;
-    font-weight: bold;
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 .btn-link {
-    display: inline-block;
-    margin-top: 15px;
-    color: var(--secondary-blue);
+    margin-top: 20px;
+    color: var(--accent-orange);
     text-decoration: none;
     font-weight: bold;
 }
 
-/* Form Section */
+/* Add Tool Section */
+.section-divider {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 40px 0;
+}
+
 .add-section {
     background: var(--white);
-    padding: 40px;
-    border-radius: 8px;
-    margin-bottom: 50px;
+    padding: 45px;
+    border-radius: 12px;
+    margin-bottom: 60px;
 }
 
 .form-container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-width: 600px;
+    gap: 18px;
+    max-width: 700px;
 }
 
 .input-row {
     display: flex;
-    gap: 15px;
+    gap: 18px;
 }
 
-.input-row input, .form-container input, .form-container textarea {
-    padding: 12px;
+input, select, textarea {
+    padding: 14px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
+    border-radius: 6px;
+    font-family: inherit;
 }
 
 .btn-submit {
     background-color: var(--primary-blue);
     color: white;
     border: none;
-    padding: 15px;
-    border-radius: 4px;
+    padding: 16px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
 }
 
 footer {
     text-align: center;
-    padding: 30px;
-    background: #f0f0f0;
-    font-size: 0.9rem;
+    padding: 40px 0;
+    background: #222;
+    color: #888;
 }
