@@ -34,7 +34,7 @@ header {
     text-align: center;
 }
 
-header h1 span {
+header h1 {
     color: var(--accent-orange);
 }
 
