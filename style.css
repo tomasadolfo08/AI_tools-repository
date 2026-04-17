@@ -230,6 +230,6 @@ footer {
     color: white;
     border: none;
     padding: 12px;
-    border-radius: 50%;
+    border-radius: 100%;
     cursor: pointer;
 }
