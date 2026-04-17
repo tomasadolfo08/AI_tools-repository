@@ -1,149 +1,161 @@
 const SUPABASE_URL = 'https://eorcxcwhvmpbiaewtuug.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvcmN4Y3dodm1wYmlhZXd0dXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNTE3MzgsImV4cCI6MjA5MTcyNzczOH0.XjlCbmNIJZPisc3EhRrOlFKlihLUPBlmwrCV_JXiRuc';
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-document.addEventListener('DOMContentLoaded', findTools);
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// DOM
+const userInput = document.getElementById('userInput');
+const categorySelect = document.getElementById('categorySelect');
+const priceFilter = document.getElementById('priceFilter');
+
+const addName = document.getElementById('addName');
+const addCat = document.getElementById('addCat');
+const addUrl = document.getElementById('addUrl');
+const addTags = document.getElementById('addTags');
+const addLang = document.getElementById('addLang');
+const addPayment = document.getElementById('addPayment');
+
+const resultsDiv = document.getElementById('results');
+const resetBtn = document.getElementById('resetBtn');
+const topBtn = document.getElementById('topBtn');
+
+// INIT
+window.addEventListener("DOMContentLoaded", findTools);
 
 // SEARCH
 async function findTools() {
     const keyword = userInput.value.toLowerCase().trim();
-    const selectedCats = [...categorySelect.selectedOptions].map(o => o.value);
-    const Payment = PaymentFilter.value;
-    const resultsDiv = document.getElementById('results');
+    const category = categorySelect.value;
+    const payment = priceFilter.value;
 
-    resultsDiv.innerHTML = '<p>Searching...</p>';
+    resultsDiv.innerHTML = "<p>Searching...</p>";
 
-    let { data: toolsList, error } = await _supabase.from('tbl_AITools').select('*');
+    let { data, error } = await supabase.from('tbl_AITools').select('*');
 
-    if (error) {
-        resultsDiv.innerHTML = `<p style="color:red;">Error loading tools.</p>`;
+    if (error || !data) {
+        resultsDiv.innerHTML = "<p>Error loading tools.</p>";
         return;
     }
 
-    const matches = toolsList.filter(tool => {
+    const filtered = data.filter(tool => {
 
         const categoryMatch =
-            selectedCats.includes('all') ||
-            selectedCats.length === 0 ||
-            selectedCats.includes(tool.Category);
+            category === "all" || tool.Category === category;
 
-        const PaymentMatch =
-            Payment === 'all' || tool.Payment === Payment;
+        const paymentMatch =
+            payment === "all" || tool.Payment === payment;
 
-        const text = [
-            tool.Name,
-            tool.Description,
-            ...(tool.Tag || [])
-        ].join(' ').toLowerCase();
+        const text = (
+            tool.Name + " " +
+            tool.Description + " " +
+            (Array.isArray(tool.Tag) ? tool.Tag.join(" ") : "")
+        ).toLowerCase();
 
-        return categoryMatch && PaymentMatch && (!keyword || text.includes(keyword));
+        const searchMatch = !keyword || text.includes(keyword);
+
+        return categoryMatch && paymentMatch && searchMatch;
     });
 
-    displayResults(matches);
+    render(filtered);
 }
 
-// DISPLAY
-function displayResults(matches) {
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = '';
+// RENDER
+function render(list) {
+    resultsDiv.innerHTML = "";
 
-    if (!matches.length) {
-        resultsDiv.innerHTML = '<p>No tools found.</p>';
+    if (!list.length) {
+        resultsDiv.innerHTML = "<p>No tools found.</p>";
         return;
     }
 
-    matches.forEach(tool => {
+    list.forEach(t => {
         resultsDiv.innerHTML += `
         <div class="card">
             <div>
-                <span class="badge">${tool.Category}</span>
-                <h3>${tool.Name}</h3>
-                <p>${tool.Description || ''}</p>
-                <p><strong>${tool.Payment || ''}</strong> • ${tool.Languages?.join(', ') || ''}</p>
+                <span class="badge">${t.Category || ""}</span>
+                <h3>${t.Name}</h3>
+                <p>${t.Description || ""}</p>
+                <p>${t.Payment || ""} • ${(t.Languages || []).join(", ")}</p>
             </div>
-            <a href="${tool.URL}" target="_blank" class="btn-link">Visit Website →</a>
+            <a href="${t.URL}" target="_blank" class="btn-link">Visit</a>
         </div>`;
     });
 }
 
 // ADD TOOL
 async function addNewTool() {
-    const name = addName.value.trim();
-    const cat = addCat.value;
-    const url = addUrl.value.trim();
-    const desc = addDesc.value.trim();
-    const tagsInput = addTags.value;
-    const langInput = addLang.value;
-    const Payment = addPayment.value;
+    const tool = {
+        Name: addName.value.trim(),
+        Category: addCat.value,
+        URL: addUrl.value.trim(),
+        Description: addDesc.value.trim(),
+        Tag: addTags.value ? addTags.value.split(",").map(t => t.trim()) : [],
+        Languages: addLang.value ? addLang.value.split(",").map(l => l.trim()) : [],
+        Payment: addPayment.value
+    };
 
-    const tagsArray = tagsInput ? tagsInput.split(',').map(t => t.trim().toLowerCase()) : [];
-    const languagesArray = langInput ? langInput.split(',').map(l => l.trim()) : [];
-
-    if(!name || !url || !cat) {
-        alert("Please fill in Name, Category, and URL.");
+    if (!tool.Name || !tool.URL || !tool.Category) {
+        alert("Fill Name, URL and Category");
         return;
     }
 
-    const { error } = await _supabase.from('tbl_AITools').insert([{
-        Name: name,
-        Description: desc,
-        Category: cat,
-        URL: url,
-        Tag: tagsArray,
-        Payment: Payment,
-        Languages: languagesArray
-    }]);
+    const { error } = await supabase.from('tbl_AITools').insert([tool]);
 
     if (error) {
-        alert("Error: " + error.message);
-    } else {
-        alert("Tool added!");
-        addName.value = '';
-        addUrl.value = '';
-        addDesc.value = '';
-        addTags.value = '';
-        addLang.value = '';
-        addCat.selectedIndex = 0;
-
-        findTools();
+        alert(error.message);
+        return;
     }
+
+    alert("Tool added!");
+
+    addName.value = "";
+    addUrl.value = "";
+    addDesc.value = "";
+    addTags.value = "";
+    addLang.value = "";
+    addCat.value = "";
+
+    findTools();
 }
 
 // RESET
 resetBtn.onclick = () => {
-    userInput.value = '';
-    categorySelect.selectedIndex = 0;
-    PaymentFilter.value = 'all';
+    userInput.value = "";
+    categorySelect.value = "all";
+    priceFilter.value = "all";
     findTools();
 };
 
 // TOP BUTTON
 topBtn.onclick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 // SUGGESTIONS
-userInput.addEventListener('input', showSuggestions);
+userInput.addEventListener("input", async () => {
+    const val = userInput.value.toLowerCase();
+    const box = document.getElementById("suggestions");
 
-async function showSuggestions() {
-    const value = userInput.value.toLowerCase();
-    const box = document.getElementById('suggestions');
+    if (!val) {
+        box.innerHTML = "";
+        return;
+    }
 
-    if (!value) return box.innerHTML = '';
+    let { data } = await supabase.from('tbl_AITools').select('Name');
 
-    const { data } = await _supabase.from('tbl_AITools').select('Name');
+    if (!data) return;
 
     const matches = data
-        .map(t => t.Name)
-        .filter(name => name.toLowerCase().startsWith(value))
+        .map(x => x.Name)
+        .filter(n => n.toLowerCase().startsWith(val))
         .slice(0, 5);
 
     box.innerHTML = matches.map(m =>
         `<div onclick="selectSuggestion('${m}')">${m}</div>`
-    ).join('');
-}
+    ).join("");
+});
 
 function selectSuggestion(text) {
     userInput.value = text;
-    document.getElementById('suggestions').innerHTML = '';
+    document.getElementById("suggestions").innerHTML = "";
 }
