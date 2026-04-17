@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', findTools);
 async function findTools() {
     const keyword = userInput.value.toLowerCase().trim();
     const selectedCats = [...categorySelect.selectedOptions].map(o => o.value);
-    const price = priceFilter.value;
+    const Payment = PaymentFilter.value;
     const resultsDiv = document.getElementById('results');
 
     resultsDiv.innerHTML = '<p>Searching...</p>';
@@ -27,8 +27,8 @@ async function findTools() {
             selectedCats.length === 0 ||
             selectedCats.includes(tool.Category);
 
-        const priceMatch =
-            price === 'all' || tool.Price === price;
+        const PaymentMatch =
+            Payment === 'all' || tool.Payment === Payment;
 
         const text = [
             tool.Name,
@@ -36,7 +36,7 @@ async function findTools() {
             ...(tool.Tag || [])
         ].join(' ').toLowerCase();
 
-        return categoryMatch && priceMatch && (!keyword || text.includes(keyword));
+        return categoryMatch && PaymentMatch && (!keyword || text.includes(keyword));
     });
 
     displayResults(matches);
@@ -59,7 +59,7 @@ function displayResults(matches) {
                 <span class="badge">${tool.Category}</span>
                 <h3>${tool.Name}</h3>
                 <p>${tool.Description || ''}</p>
-                <p><strong>${tool.Price || ''}</strong> • ${tool.Languages?.join(', ') || ''}</p>
+                <p><strong>${tool.Payment || ''}</strong> • ${tool.Languages?.join(', ') || ''}</p>
             </div>
             <a href="${tool.URL}" target="_blank" class="btn-link">Visit Website →</a>
         </div>`;
@@ -74,7 +74,7 @@ async function addNewTool() {
     const desc = addDesc.value.trim();
     const tagsInput = addTags.value;
     const langInput = addLang.value;
-    const price = addPrice.value;
+    const Payment = addPayment.value;
 
     const tagsArray = tagsInput ? tagsInput.split(',').map(t => t.trim().toLowerCase()) : [];
     const languagesArray = langInput ? langInput.split(',').map(l => l.trim()) : [];
@@ -90,7 +90,7 @@ async function addNewTool() {
         Category: cat,
         URL: url,
         Tag: tagsArray,
-        Price: price,
+        Payment: Payment,
         Languages: languagesArray
     }]);
 
@@ -113,7 +113,7 @@ async function addNewTool() {
 resetBtn.onclick = () => {
     userInput.value = '';
     categorySelect.selectedIndex = 0;
-    priceFilter.value = 'all';
+    PaymentFilter.value = 'all';
     findTools();
 };
 
