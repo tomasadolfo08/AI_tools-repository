@@ -1,20 +1,198 @@
-/* --- SMALL SPACING (safe, won't break layout) --- */
-.search-container select {
-    margin-right: 8px;
+:root {
+    --primary-blue: #003366;
+    --secondary-blue: #0056b3;
+    --accent-orange: #ff7f00;
+    --text-dark: #333333;
+    --bg-light: #f4f7f9;
+    --white: #ffffff;
 }
 
-.search-container input {
-    margin-right: 8px;
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.6;
 }
 
-/* --- Suggestions dropdown (positioned properly) --- */
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary-blue);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* HEADER */
+header {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 70px 0;
+    text-align: center;
+}
+
+header h1 {
+    color: var(--accent-orange);
+}
+
+/* SEARCH */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#categorySelect,
+#userInput,
+#priceFilter {
+    padding: 16px;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+#categorySelect {
+    background: #f0f0f0;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#userInput {
+    flex: 2;
+    border-left: 1px solid #ddd;
+}
+
+#priceFilter {
+    border-left: 1px solid #ddd;
+    background: #fafafa;
+}
+
+header button {
+    background-color: var(--accent-orange);
+    color: white;
+    border: none;
+    padding: 0 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#resetBtn {
+    background: #ccc;
+    color: black;
+}
+
+/* RESULTS */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 50px 0;
+}
+
+.card {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 10px;
+    border-top: 5px solid var(--secondary-blue);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.badge {
+    background: #eef2f7;
+    color: var(--secondary-blue);
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-link {
+    margin-top: 20px;
+    color: var(--accent-orange);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ADD SECTION */
+.section-divider {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 40px 0;
+}
+
+.add-section {
+    background: var(--white);
+    padding: 45px;
+    border-radius: 12px;
+    margin: 60px auto;
+    max-width: 800px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.input-row {
+    display: flex;
+    gap: 18px;
+}
+
+input, select, textarea {
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.btn-submit {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 40px 0;
+    background: #222;
+    color: #888;
+}
+
+/* SUGGESTIONS */
 .suggestions-box {
     position: absolute;
     background: white;
     border: 1px solid #ddd;
     width: 320px;
-    z-index: 100;
-    margin-top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
 }
 
 .suggestions-box div {
@@ -26,23 +204,7 @@
     background: #f4f4f4;
 }
 
-/* --- Center add section WITHOUT breaking style --- */
-.add-section {
-    max-width: 900px;
-    margin: 60px auto;
-}
-
-/* --- Smooth hover (very subtle, keeps your style) --- */
-.card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-
-/* --- Top button (small and clean) --- */
+/* TOP BUTTON */
 #topBtn {
     position: fixed;
     bottom: 20px;
@@ -50,13 +212,7 @@
     background: var(--accent-orange);
     color: white;
     border: none;
-    padding: 10px 14px;
+    padding: 12px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 16px;
-}
-
-/* --- Reset button small spacing --- */
-#resetBtn {
-    margin-left: 5px;
 }
