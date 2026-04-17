@@ -38,55 +38,73 @@ header h1 {
     color: var(--accent-orange);
 }
 
-/* SEARCH */
+/* SEARCH - UPDATED FOR INDIVIDUAL COMPONENT LOOK */
 .search-container {
     display: flex;
     justify-content: center;
-    align-items: center; 
-    gap: 20px;            /* <--- Added semicolon; adjust this for more/less space */
+    align-items: stretch; /* Ensures buttons and inputs are the same height */
+    gap: 25px;            /* This creates the distance between components */
     margin-top: 40px;
-    max-width: 900px;     /* Increased slightly to fit the gaps */
+    max-width: 1100px;    /* Wider to allow for the gaps */
     margin-left: auto;
     margin-right: auto;
 }
 
+/* Common style for every piece in the search bar */
 #categorySelect,
 #userInput,
-#priceFilter {
-    padding: 16px;
-    border: none;
+#priceFilter,
+header button {
+    padding: 16px 20px;
+    border: 1px solid transparent; 
     outline: none;
     font-size: 0.95rem;
+    border-radius: 10px;  /* Individual rounded corners */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Floating shadow effect */
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 #categorySelect {
     background: #f0f0f0;
     cursor: pointer;
     font-weight: 600;
+    color: var(--text-dark);
 }
 
 #userInput {
-    flex: 2;
-    border-left: 1px solid #ddd;
+    flex: 2; /* Keeps the search box wider */
+    background: var(--white);
+    border: 1px solid #ddd;
 }
 
 #priceFilter {
-    border-left: 1px solid #ddd;
     background: #fafafa;
+    color: var(--text-dark);
+    cursor: pointer;
 }
 
+/* Buttons specifically */
 header button {
     background-color: var(--accent-orange);
     color: white;
     border: none;
-    padding: 0 20px;
     font-weight: bold;
     cursor: pointer;
+    min-width: 110px;
+}
+
+header button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
 #resetBtn {
-    background: #ccc;
-    color: black;
+    background: #e0e0e0;
+    color: #333;
+}
+
+#resetBtn:hover {
+    background: #d0d0d0;
 }
 
 /* RESULTS */
