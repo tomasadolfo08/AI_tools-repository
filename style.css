@@ -42,7 +42,7 @@ header h1 {
 .search-container {
     display: flex;
     justify-content: center;
-    gap: 15px
+    gap: 50px
     margin-top: 40px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     border-radius: 8px;
