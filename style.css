@@ -221,7 +221,6 @@ footer {
     background: #f4f4f4;
 }
 
-/* TOP BUTTON */
 #topBtn {
     position: fixed;
     bottom: 20px;
@@ -230,6 +229,6 @@ footer {
     color: white;
     border: none;
     padding: 12px;
-    border-radius: 100%;
+    border-radius: 50%;
     cursor: pointer;
 }
