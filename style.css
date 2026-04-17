@@ -139,6 +139,10 @@ header button:hover {
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
+html, body {
+    scroll-behavior: smooth;
+}
+
 #resetBtn {
     background: #e0e0e0;
     color: #333;
