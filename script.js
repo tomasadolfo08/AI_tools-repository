@@ -5,7 +5,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // DOM
 const userInput = document.getElementById('userInput');
-const categorySelect = document.getElementById('categorySelect');
+const categorySelect = document.getElementById('categorySelect');v
 const priceFilter = document.getElementById('priceFilter');
 
 const addName = document.getElementById('addName');
