@@ -49,29 +49,27 @@
 </div>
 
 <div id="suggestions" class="suggestions-box"></div>
-
 </div>
 </header>
 
 <main class="container">
 
 <div id="results" class="results-grid">
-<p class="placeholder-text">Searching database...</p>
+<p class="placeholder-text">Loading tools...</p>
 </div>
 
 <hr class="section-divider">
 
 <section class="add-section">
-<h2>Add to Repository</h2>
-<p>Contribute a new AI tool to our directory using our verified categories.</p>
+<h2>Add Tool</h2>
 
 <div class="form-container">
 
 <div class="input-row">
-<input type="text" id="addName" placeholder="Tool Name">
+<input id="addName" type="text" placeholder="Tool Name">
 
 <select id="addCat">
-<option value="" disabled selected>Select Category</option>
+<option value="">Select Category</option>
 <option value="Writing & Content">Writing & Content</option>
 <option value="Image & Art">Image & Art</option>
 <option value="Video & Motion">Video & Motion</option>
@@ -85,9 +83,9 @@
 </select>
 </div>
 
-<input type="text" id="addUrl" placeholder="Website URL (https://...)">
-<input type="text" id="addTags" placeholder="Tags (comma separated)">
-<input type="text" id="addLang" placeholder="Languages (e.g. English, Spanish)">
+<input id="addUrl" type="text" placeholder="URL">
+<input id="addTags" type="text" placeholder="Tags">
+<input id="addLang" type="text" placeholder="Languages">
 
 <select id="addPayment">
 <option value="Free">Free</option>
@@ -95,9 +93,9 @@
 <option value="Paid">Paid</option>
 </select>
 
-<textarea id="addDesc" placeholder="Describe what this tool does..."></textarea>
+<textarea id="addDesc" placeholder="Description"></textarea>
 
-<button class="btn-submit" onclick="addNewTool()">Submit Tool</button>
+<button class="btn-submit" onclick="addNewTool()">Add Tool</button>
 
 </div>
 </section>
