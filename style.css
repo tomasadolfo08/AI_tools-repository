@@ -1,17 +1,20 @@
-/* spacing improvement */
-.search-container {
-    gap: 10px;
+/* --- SMALL SPACING (safe, won't break layout) --- */
+.search-container select {
+    margin-right: 8px;
 }
 
-/* suggestions dropdown */
+.search-container input {
+    margin-right: 8px;
+}
+
+/* --- Suggestions dropdown (positioned properly) --- */
 .suggestions-box {
     position: absolute;
     background: white;
     border: 1px solid #ddd;
-    width: 300px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
+    width: 320px;
+    z-index: 100;
+    margin-top: 5px;
 }
 
 .suggestions-box div {
@@ -23,23 +26,23 @@
     background: #f4f4f4;
 }
 
-/* center add section */
+/* --- Center add section WITHOUT breaking style --- */
 .add-section {
-    max-width: 800px;
-    margin: 40px auto;
+    max-width: 900px;
+    margin: 60px auto;
 }
 
-/* hover effects */
+/* --- Smooth hover (very subtle, keeps your style) --- */
 .card {
-    transition: 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
-/* top button */
+/* --- Top button (small and clean) --- */
 #topBtn {
     position: fixed;
     bottom: 20px;
@@ -47,7 +50,13 @@
     background: var(--accent-orange);
     color: white;
     border: none;
-    padding: 12px;
+    padding: 10px 14px;
     border-radius: 50%;
     cursor: pointer;
+    font-size: 16px;
+}
+
+/* --- Reset button small spacing --- */
+#resetBtn {
+    margin-left: 5px;
 }
