@@ -1,88 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Tool Registry | Explorer</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Tool Registry | Explorer</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-    <header>
-        <div class="container">
-            <h1>AI Tool Repository</h1>
-            <p>Find the perfect artificial intelligence tools for your project</p>
-            
-            <div class="search-container">
-                <select id="categorySelect">
-                    <option value="all">All Categories</option>
-                    <option value="Writing & Content">Writing & Content</option>
-                    <option value="Image & Art">Image & Art</option>
-                    <option value="Video & Motion">Video & Motion</option>
-                    <option value="Audio & Voice">Audio & Voice</option>
-                    <option value="Code & Dev">Code & Dev</option>
-                    <option value="Business & Productivity">Business & Productivity</option>
-                    <option value="Marketing & Social">Marketing & Social</option>
-                    <option value="Chatbots & Agents">Chatbots & Agents</option>
-                    <option value="Research & Education">Research & Education</option>
-                    <option value="Life & Fun">Life & Fun</option>
-                </select>
-                <input type="text" id="userInput" placeholder="Search by name, description or tags...">
-                <button onclick="findTools()">Search</button>
-            </div>
-        </div>
-    </header>
+<header>
+<div class="container">
+<h1>AI Tool Repository</h1>
+<p>Find the perfect artificial intelligence tools for your project</p>
 
-    <main class="container">
-        <div id="results" class="results-grid">
-            <p class="placeholder-text">Searching database...</p>
-        </div>
+<div class="search-container">
 
-        <hr class="section-divider">
+<select id="categorySelect" multiple>
+<option value="all">All Categories</option>
+<option value="Writing & Content">Writing & Content</option>
+<option value="Image & Art">Image & Art</option>
+<option value="Video & Motion">Video & Motion</option>
+<option value="Audio & Voice">Audio & Voice</option>
+<option value="Code & Dev">Code & Dev</option>
+<option value="Business & Productivity">Business & Productivity</option>
+<option value="Marketing & Social">Marketing & Social</option>
+<option value="Chatbots & Agents">Chatbots & Agents</option>
+<option value="Research & Education">Research & Education</option>
+<option value="Life & Fun">Life & Fun</option>
+</select>
 
-        <section class="add-section">
-            <h2>Add to Repository</h2>
-            <p>Contribute a new AI tool to our directory using our verified categories.</p>
-            <div class="form-container">
-                <div class="input-row">
-                    <input type="text" id="addName" placeholder="Tool Name">
-                    <select id="addCat">
-                        <option value="" disabled selected>Select Category</option>
-                        <option value="Writing & Content">Writing & Content</option>
-                        <option value="Image & Art">Image & Art</option>
-                        <option value="Video & Motion">Video & Motion</option>
-                        <option value="Audio & Voice">Audio & Voice</option>
-                        <option value="Code & Dev">Code & Dev</option>
-                        <option value="Business & Productivity">Business & Productivity</option>
-                        <option value="Marketing & Social">Marketing & Social</option>
-                        <option value="Chatbots & Agents">Chatbots & Agents</option>
-                        <option value="Research & Education">Research & Education</option>
-                        <option value="Life & Fun">Life & Fun</option>
-                    </select>
-                </div>
-                <input type="text" id="addUrl" placeholder="Website URL (https://...)">
-                <input type="text" id="addTags" placeholder="Tags (comma separated)">
-                <input type="text" id="addLang" placeholder="Languages (e.g. English, Spanish)">
-                <select id="addPrice">
-                        <option value="Free">Free</option>
-                        <option value="Freemium">Freemium</option>
-                        <option value="Paid">Paid</option>
-                </select>
-                
-                <textarea id="addDesc" placeholder="Describe what this tool does..."></textarea>
-                <button class="btn-submit" onclick="addNewTool()">Submit Tool</button>
-            </div>
-        </section>
-    </main>
+<input type="text" id="userInput" placeholder="Search...">
 
-    <footer>
-        <div class="container">
-            <p>AI Tool Repository</p>
-        </div>
-    </footer>
+<select id="priceFilter">
+<option value="all">All Prices</option>
+<option value="Free">Free</option>
+<option value="Freemium">Freemium</option>
+<option value="Paid">Paid</option>
+</select>
 
-    <script src="script.js"></script>
+<button onclick="findTools()">Search</button>
+<button id="resetBtn">Reset</button>
+
+</div>
+
+<div id="suggestions" class="suggestions-box"></div>
+
+</div>
+</header>
+
+<main class="container">
+
+<div id="results" class="results-grid">
+<p class="placeholder-text">Searching database...</p>
+</div>
+
+<hr class="section-divider">
+
+<section class="add-section">
+<h2>Add to Repository</h2>
+<p>Contribute a new AI tool to our directory using our verified categories.</p>
+
+<div class="form-container">
+
+<div class="input-row">
+<input type="text" id="addName" placeholder="Tool Name">
+
+<select id="addCat">
+<option value="" disabled selected>Select Category</option>
+<option value="Writing & Content">Writing & Content</option>
+<option value="Image & Art">Image & Art</option>
+<option value="Video & Motion">Video & Motion</option>
+<option value="Audio & Voice">Audio & Voice</option>
+<option value="Code & Dev">Code & Dev</option>
+<option value="Business & Productivity">Business & Productivity</option>
+<option value="Marketing & Social">Marketing & Social</option>
+<option value="Chatbots & Agents">Chatbots & Agents</option>
+<option value="Research & Education">Research & Education</option>
+<option value="Life & Fun">Life & Fun</option>
+</select>
+</div>
+
+<input type="text" id="addUrl" placeholder="Website URL (https://...)">
+<input type="text" id="addTags" placeholder="Tags (comma separated)">
+<input type="text" id="addLang" placeholder="Languages (e.g. English, Spanish)">
+
+<select id="addPrice">
+<option value="Free">Free</option>
+<option value="Freemium">Freemium</option>
+<option value="Paid">Paid</option>
+</select>
+
+<textarea id="addDesc" placeholder="Describe what this tool does..."></textarea>
+
+<button class="btn-submit" onclick="addNewTool()">Submit Tool</button>
+
+</div>
+</section>
+
+</main>
+
+<footer>
+<div class="container">
+<p>AI Tool Repository</p>
+</div>
+</footer>
+
+<button id="topBtn">↑</button>
+
+<script src="script.js"></script>
 </body>
 </html>
