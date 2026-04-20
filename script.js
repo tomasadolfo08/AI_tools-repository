@@ -5,7 +5,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // DOM
 const userInput = document.getElementById('userInput');
-const categorySelect = document.getElementById('categorySelect');v
+const categorySelect = document.getElementById('categorySelect'); // FIXED
 const priceFilter = document.getElementById('priceFilter');
 
 const addName = document.getElementById('addName');
@@ -14,6 +14,7 @@ const addUrl = document.getElementById('addUrl');
 const addTags = document.getElementById('addTags');
 const addLang = document.getElementById('addLang');
 const addPayment = document.getElementById('addPayment');
+const addDesc = document.getElementById('addDesc'); // FIXED
 
 const resultsDiv = document.getElementById('results');
 const resetBtn = document.getElementById('resetBtn');
@@ -38,12 +39,8 @@ async function findTools() {
     }
 
     const filtered = data.filter(tool => {
-
-        const categoryMatch =
-            category === "all" || tool.Category === category;
-
-        const paymentMatch =
-            payment === "all" || tool.Payment === payment;
+        const categoryMatch = category === "all" || tool.Category === category;
+        const paymentMatch = payment === "all" || tool.Payment === payment;
 
         const text = (
             tool.Name + " " +
