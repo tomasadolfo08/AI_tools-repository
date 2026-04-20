@@ -221,7 +221,7 @@ footer {
     position: absolute;
     top: 100%;
     left: 0;
-    width: 90%;
+    width: 100%;
 
     margin-top: 0; /* important */
     
@@ -271,7 +271,24 @@ footer {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
+/* Add this class to the input when suggestions are visible */
+#userInput.search-active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent; /* Removes the dividing line */
+    
+    /* Change the shadow so it only casts up and to the sides, not down into the dropdown */
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.1), 4px 0 15px rgba(0,0,0,0.05), -4px 0 15px rgba(0,0,0,0.05); 
+}
+
+/* Tweak your existing suggestions box shadow so it completes the "card" look */
+.suggestions-box {
+    /* Keep your existing properties, but update the box-shadow */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2), 4px 0 15px rgba(0,0,0,0.05), -4px 0 15px rgba(0,0,0,0.05);
+}
+
 /* SMOOTH SCROLL */
 html, body {
     scroll-behavior: smooth;
 }
+
