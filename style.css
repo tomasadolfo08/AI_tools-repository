@@ -48,6 +48,7 @@ header h1 {
     margin-left: auto;
     margin-right: auto;
     line-height: 0; 
+    position: relative;
 }
 
 #categorySelect,
@@ -249,21 +250,33 @@ footer {
 /* SUGGESTIONS */
 .suggestions-box {
     position: absolute;
-    background: white;
+    background: var(--white);
     border: 1px solid #ddd;
-    width: 320px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
+    left: 0;
+    transform: none;
+    width: 100%;
+    z-index: 1000;
+
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+
+    margin-top: 10px;
+    overflow: hidden;
 }
 
 .suggestions-box div {
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
+    color: var(--text-dark); /* 🔥 THIS FIXES IT */
+    font-size: 0.95rem;
 }
 
 .suggestions-box div:hover {
-    background: #f4f4f4;
+    background: var(--bg-light);
+}
+
+.suggestions-box div:not(:last-child) {
+    border-bottom: 1px solid #eee;
 }
 
 /* TOP BUTTON - PERFECT CIRCLE */
