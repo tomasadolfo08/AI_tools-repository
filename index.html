@@ -34,7 +34,11 @@
 <option value="Life & Fun">Life & Fun</option>
 </select>
 
-<input type="text" id="userInput" placeholder="Search...">
+<!-- ✅ FIXED WRAPPER -->
+<div class="input-wrapper">
+    <input type="text" id="userInput" placeholder="Search...">
+    <div id="suggestions" class="suggestions-box"></div>
+</div>
 
 <select id="priceFilter">
 <option value="all">All Prices</option>
@@ -47,8 +51,6 @@
 <button id="resetBtn">Reset</button>
 
 </div>
-
-<div id="suggestions" class="suggestions-box"></div>
 </div>
 </header>
 
