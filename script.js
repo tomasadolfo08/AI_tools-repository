@@ -5,7 +5,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // DOM
 const userInput = document.getElementById('userInput');
-const categorySelect = document.getElementById('categorySelect'); // FIXED
+const categorySelect = document.getElementById('categorySelect');
 const priceFilter = document.getElementById('priceFilter');
 
 const addName = document.getElementById('addName');
@@ -14,7 +14,7 @@ const addUrl = document.getElementById('addUrl');
 const addTags = document.getElementById('addTags');
 const addLang = document.getElementById('addLang');
 const addPayment = document.getElementById('addPayment');
-const addDesc = document.getElementById('addDesc'); // FIXED
+const addDesc = document.getElementById('addDesc');
 
 const resultsDiv = document.getElementById('results');
 const resetBtn = document.getElementById('resetBtn');
@@ -29,12 +29,16 @@ async function findTools() {
     const category = categorySelect.value;
     const payment = priceFilter.value;
 
-    resultsDiv.innerHTML = "<p>Searching...</p>";
-
     let { data, error } = await supabase.from('tbl_AITools').select('*');
 
-    if (error || !data) {
+    if (error) {
+        console.error("FETCH ERROR:", error);
         resultsDiv.innerHTML = "<p>Error loading tools.</p>";
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        resultsDiv.innerHTML = "<p>No tools found.</p>";
         return;
     }
 
@@ -48,10 +52,13 @@ async function findTools() {
             (Array.isArray(tool.Tag) ? tool.Tag.join(" ") : "")
         ).toLowerCase();
 
-        const searchMatch = !keyword || text.includes(keyword);
-
-        return categoryMatch && paymentMatch && searchMatch;
+        return (!keyword || text.includes(keyword)) && categoryMatch && paymentMatch;
     });
+
+    if (!filtered.length) {
+        resultsDiv.innerHTML = "<p>No tools found.</p>";
+        return;
+    }
 
     render(filtered);
 }
@@ -59,11 +66,6 @@ async function findTools() {
 // RENDER
 function render(list) {
     resultsDiv.innerHTML = "";
-
-    if (!list.length) {
-        resultsDiv.innerHTML = "<p>No tools found.</p>";
-        return;
-    }
 
     list.forEach(t => {
         resultsDiv.innerHTML += `
@@ -96,15 +98,20 @@ async function addNewTool() {
         return;
     }
 
-    const { error } = await supabase.from('tbl_AITools').insert([tool]);
+    console.log("SENDING:", tool);
+
+    const { data, error } = await supabase.from('tbl_AITools').insert([tool]);
 
     if (error) {
-        alert(error.message);
+        console.error("INSERT ERROR:", error);
+        alert("Error: " + error.message);
         return;
     }
 
+    console.log("INSERT SUCCESS:", data);
     alert("Tool added!");
 
+    // clear form
     addName.value = "";
     addUrl.value = "";
     addDesc.value = "";
