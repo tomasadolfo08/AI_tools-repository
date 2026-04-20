@@ -7,13 +7,22 @@
     --white: #ffffff;
 }
 
+/* GLOBAL RESET */
+* {
+    box-sizing: border-box; /* Crucial for perfect alignment */
+}
+
+html, body {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     background-color: var(--bg-light);
     color: var(--text-dark);
-    margin: 0;
     line-height: 1.6;
-    scroll-behavior: smooth;
 }
 
 h1, h2, h3 {
@@ -31,22 +40,23 @@ h1, h2, h3 {
 header {
     background-color: var(--primary-blue);
     color: var(--white);
-    padding: 70px 0;
+    padding: 40px 0 30px 0;
     text-align: center;
 }
 
 header h1 {
     color: var(--accent-orange);
+    margin-bottom: 10px;
 }
 
-/* SEARCH BAR */
+/* SEARCH BAR SECTION */
 .search-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 25px;
-    margin-top: 40px;
-    max-width: 1100px;
+    gap: 15px;
+    margin-top: 20px; 
+    max-width: 750px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
@@ -62,13 +72,11 @@ header h1 {
 #userInput,
 #priceFilter,
 header button {
-    height: 54px;
-    padding: 0 30px;
-    margin: 0;
-    font-size: 0.95rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    box-sizing: border-box;
+    height: 48px;
+    padding: 0 20px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     outline: none;
     border: 1px solid #ddd;
     transition: all 0.2s ease;
@@ -79,34 +87,37 @@ header button {
     background: var(--white);
 }
 
-/* THE "GOOGLE" LOOK: Active state when suggestions are open */
+/* GOOGLE LOOK ACTIVE STATE */
 #userInput.search-active {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: 1px solid transparent;
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.1), 4px 0 15px rgba(0,0,0,0.1), -4px 0 15px rgba(0,0,0,0.1);
+    border-bottom-color: #eee;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.1), 4px 0 12px rgba(0,0,0,0.1), -4px 0 12px rgba(0,0,0,0.1);
 }
 
 /* SUGGESTIONS BOX */
 .suggestions-box {
     position: absolute;
-    top: 54px; /* Matches height of input */
+    top: 100%; /* Sits exactly at the bottom edge of input wrapper */
     left: 0;
     width: 100%;
     background: var(--white);
     border: 1px solid #ddd;
     border-top: none;
-    border-radius: 0 0 10px 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
     z-index: 1000;
     overflow: hidden;
+    
+    /* FIX: Completely hidden until JS triggers it */
+    display: none; 
 }
 
 .suggestions-box div {
-    padding: 12px 30px;
+    padding: 12px 20px;
     cursor: pointer;
     color: var(--text-dark);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-align: left;
 }
 
@@ -118,7 +129,7 @@ header button {
     border-bottom: 1px solid #eee;
 }
 
-/* Rest of your styles... */
+/* OTHER STYLES */
 #categorySelect { background: #f0f0f0; cursor: pointer; font-weight: 600; }
 #priceFilter { background: #fafafa; cursor: pointer; }
 
@@ -127,14 +138,16 @@ header button {
     color: white;
     font-weight: bold;
     cursor: pointer;
-    min-width: 110px;
+    min-width: 100px;
     border: none;
 }
 
 header button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
+
+#resetBtn { background: #e0e0e0; color: #333; }
 
 .results-grid {
     display: grid;
@@ -156,3 +169,73 @@ header button:hover {
 }
 
 .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
+.badge {
+    background: #eef2f7;
+    color: var(--secondary-blue);
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-link {
+    margin-top: 20px;
+    color: var(--accent-orange);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.add-section {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 12px;
+    margin: 60px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.form-container { display: flex; flex-direction: column; gap: 15px; }
+.input-row { display: flex; gap: 15px; }
+
+input, select, textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.btn-submit {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 40px 0;
+    background: #222;
+    color: #888;
+}
+
+#topBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
