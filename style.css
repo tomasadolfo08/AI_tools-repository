@@ -7,13 +7,17 @@
     --white: #ffffff;
 }
 
+/* GLOBAL STYLES */
+html, body {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     background-color: var(--bg-light);
     color: var(--text-dark);
     margin: 0;
     line-height: 1.6;
-    scroll-behavior: smooth;
 }
 
 h1, h2, h3 {
@@ -27,26 +31,27 @@ h1, h2, h3 {
     padding: 0 20px;
 }
 
-/* HEADER */
+/* HEADER - Compressed to move search bar up */
 header {
     background-color: var(--primary-blue);
     color: var(--white);
-    padding: 70px 0;
+    padding: 40px 0 30px 0; /* Reduced padding to move everything up */
     text-align: center;
 }
 
 header h1 {
     color: var(--accent-orange);
+    margin-bottom: 10px;
 }
 
-/* SEARCH BAR */
+/* SEARCH BAR SECTION */
 .search-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 25px;
-    margin-top: 40px;
-    max-width: 1100px;
+    gap: 15px;      /* Tighter gap between elements */
+    margin-top: 20px; 
+    max-width: 750px; /* Smaller width for a cleaner look */
     margin-left: auto;
     margin-right: auto;
     position: relative;
@@ -57,56 +62,90 @@ header h1 {
     flex: 2;
 }
 
-/* SEARCH ELEMENTS */
+/* UNIFIED SEARCH ELEMENT STYLES */
 #categorySelect,
 #userInput,
 #priceFilter,
 header button {
-    height: 54px;
-    padding: 0 30px;
+    height: 48px;   /* Slightly smaller height */
+    padding: 0 20px;
     margin: 0;
-    font-size: 0.95rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    font-size: 0.9rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     box-sizing: border-box;
     outline: none;
     border: 1px solid #ddd;
     transition: all 0.2s ease;
 }
 
+/* INPUT SPECIFICS */
 #userInput {
     width: 100%;
     background: var(--white);
 }
 
-/* THE "GOOGLE" LOOK: Active state when suggestions are open */
+/* THE "GOOGLE" LOOK: Active state when suggestions appear */
 #userInput.search-active {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: 1px solid transparent;
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.1), 4px 0 15px rgba(0,0,0,0.1), -4px 0 15px rgba(0,0,0,0.1);
+    border-bottom-color: transparent;
+    /* Shadow adjusted to wrap around the top and sides only */
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.1), 4px 0 12px rgba(0,0,0,0.1), -4px 0 12px rgba(0,0,0,0.1);
 }
 
-/* SUGGESTIONS BOX */
+#categorySelect {
+    background: #f0f0f0;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+#priceFilter {
+    background: #fafafa;
+    cursor: pointer;
+}
+
+/* BUTTON STYLES */
+header button {
+    background-color: var(--accent-orange);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 100px;
+    border: none;
+}
+
+header button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+#resetBtn {
+    background: #e0e0e0;
+    color: #333;
+}
+
+/* SUGGESTIONS BOX (The Dropdown) */
 .suggestions-box {
     position: absolute;
-    top: 54px; /* Matches height of input */
+    top: 48px; /* Matches the 48px height of the input */
     left: 0;
     width: 100%;
     background: var(--white);
     border: 1px solid #ddd;
     border-top: none;
-    border-radius: 0 0 10px 10px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
     z-index: 1000;
     overflow: hidden;
 }
 
 .suggestions-box div {
-    padding: 12px 30px;
+    padding: 12px 20px;
     cursor: pointer;
     color: var(--text-dark);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-align: left;
 }
 
@@ -118,24 +157,7 @@ header button {
     border-bottom: 1px solid #eee;
 }
 
-/* Rest of your styles... */
-#categorySelect { background: #f0f0f0; cursor: pointer; font-weight: 600; }
-#priceFilter { background: #fafafa; cursor: pointer; }
-
-header button {
-    background-color: var(--accent-orange);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    min-width: 110px;
-    border: none;
-}
-
-header button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-}
-
+/* RESULTS GRID */
 .results-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -155,4 +177,88 @@ header button:hover {
     transition: 0.2s;
 }
 
-.card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.badge {
+    background: #eef2f7;
+    color: var(--secondary-blue);
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-link {
+    margin-top: 20px;
+    color: var(--accent-orange);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ADD SECTION */
+.add-section {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 12px;
+    margin: 60px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-row {
+    display: flex;
+    gap: 15px;
+}
+
+input, select, textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.btn-submit {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 40px 0;
+    background: #222;
+    color: #888;
+}
+
+/* TOP BUTTON */
+#topBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
