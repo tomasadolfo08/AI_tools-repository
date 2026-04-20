@@ -13,6 +13,7 @@ body {
     color: var(--text-dark);
     margin: 0;
     line-height: 1.6;
+    scroll-behavior: smooth;
 }
 
 h1, h2, h3 {
@@ -51,14 +52,9 @@ header h1 {
     position: relative;
 }
 
-/* INPUT WRAPPER (IMPORTANT FOR SUGGESTIONS) */
 .input-wrapper {
     position: relative;
     flex: 2;
-}
-
-#userInput {
-    width: 100%;
 }
 
 /* SEARCH ELEMENTS */
@@ -71,41 +67,68 @@ header button {
     margin: 0;
     font-size: 0.95rem;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     box-sizing: border-box;
     outline: none;
-    border: 1px solid transparent;
-}
-
-/* INPUT STYLES */
-#categorySelect {
-    background: #f0f0f0;
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--text-dark);
+    border: 1px solid #ddd;
+    transition: all 0.2s ease;
 }
 
 #userInput {
+    width: 100%;
+    background: var(--white);
+}
+
+/* THE "GOOGLE" LOOK: Active state when suggestions are open */
+#userInput.search-active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 1px solid transparent;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.1), 4px 0 15px rgba(0,0,0,0.1), -4px 0 15px rgba(0,0,0,0.1);
+}
+
+/* SUGGESTIONS BOX */
+.suggestions-box {
+    position: absolute;
+    top: 54px; /* Matches height of input */
+    left: 0;
+    width: 100%;
     background: var(--white);
     border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+    overflow: hidden;
 }
 
-#priceFilter {
-    background: #fafafa;
+.suggestions-box div {
+    padding: 12px 30px;
     cursor: pointer;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    text-align: left;
 }
 
-/* BUTTONS */
+.suggestions-box div:hover {
+    background: var(--bg-light);
+}
+
+.suggestions-box div:not(:last-child) {
+    border-bottom: 1px solid #eee;
+}
+
+/* Rest of your styles... */
+#categorySelect { background: #f0f0f0; cursor: pointer; font-weight: 600; }
+#priceFilter { background: #fafafa; cursor: pointer; }
+
 header button {
     background-color: var(--accent-orange);
     color: white;
     font-weight: bold;
     cursor: pointer;
     min-width: 110px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
 }
 
 header button:hover {
@@ -113,16 +136,6 @@ header button:hover {
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
-#resetBtn {
-    background: #e0e0e0;
-    color: #333;
-}
-
-#resetBtn:hover {
-    background: #d0d0d0;
-}
-
-/* RESULTS */
 .results-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -142,153 +155,4 @@ header button:hover {
     transition: 0.2s;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.badge {
-    background: #eef2f7;
-    color: var(--secondary-blue);
-    padding: 5px 12px;
-    font-size: 0.75rem;
-    border-radius: 20px;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-.btn-link {
-    margin-top: 20px;
-    color: var(--accent-orange);
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* ADD SECTION */
-.section-divider {
-    border: 0;
-    height: 1px;
-    background: #ddd;
-    margin: 40px 0;
-}
-
-.add-section {
-    background: var(--white);
-    padding: 45px;
-    border-radius: 12px;
-    margin: 60px auto;
-    max-width: 800px;
-}
-
-.form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
-
-.input-row {
-    display: flex;
-    gap: 18px;
-}
-
-input, select, textarea {
-    padding: 14px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-family: inherit;
-}
-
-.btn-submit {
-    background-color: var(--primary-blue);
-    color: white;
-    border: none;
-    padding: 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 40px 0;
-    background: #222;
-    color: #888;
-}
-
-/* SUGGESTIONS (FIXED) */
-.suggestions-box {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-
-    margin-top: 0; /* important */
-    
-    background: var(--white);
-    border: 1px solid #ddd;
-    border-top: none; /* removes double border line */
-
-    border-radius: 0 0 8px 8px;
-
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    z-index: 1000;
-    overflow: hidden;
-}
-
-.suggestions-box div {
-    padding: 12px;
-    cursor: pointer;
-    color: var(--text-dark);
-    font-size: 0.95rem;
-}
-
-.suggestions-box div:hover {
-    background: var(--bg-light);
-}
-
-.suggestions-box div:not(:last-child) {
-    border-bottom: 1px solid #eee;
-}
-
-/* TOP BUTTON */
-#topBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--accent-orange);
-    color: white;
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-/* Add this class to the input when suggestions are visible */
-#userInput.search-active {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-color: transparent; /* Removes the dividing line */
-    
-    /* Change the shadow so it only casts up and to the sides, not down into the dropdown */
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.1), 4px 0 15px rgba(0,0,0,0.05), -4px 0 15px rgba(0,0,0,0.05); 
-}
-
-/* Tweak your existing suggestions box shadow so it completes the "card" look */
-.suggestions-box {
-    /* Keep your existing properties, but update the box-shadow */
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2), 4px 0 15px rgba(0,0,0,0.05), -4px 0 15px rgba(0,0,0,0.05);
-}
-
-/* SMOOTH SCROLL */
-html, body {
-    scroll-behavior: smooth;
-}
-
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
