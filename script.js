@@ -4,6 +4,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// SEARCH ELEMENTS
 const userInput = document.getElementById('userInput');
 const categorySelect = document.getElementById('categorySelect');
 const priceFilter = document.getElementById('priceFilter');
@@ -11,10 +12,19 @@ const resultsDiv = document.getElementById('results');
 const resetBtn = document.getElementById('resetBtn');
 const topBtn = document.getElementById('topBtn');
 
+// ADD TOOL FORM ELEMENTS (Restored)
+const addName = document.getElementById('addName');
+const addCat = document.getElementById('addCat');
+const addUrl = document.getElementById('addUrl');
+const addTags = document.getElementById('addTags');
+const addLang = document.getElementById('addLang');
+const addPayment = document.getElementById('addPayment');
+const addDesc = document.getElementById('addDesc');
+
 // INIT
 window.addEventListener("DOMContentLoaded", findTools);
 
-// SEARCH LOGIC
+// --- SEARCH LOGIC ---
 async function findTools() {
     const keyword = userInput.value.toLowerCase().trim();
     const category = categorySelect.value;
@@ -31,7 +41,7 @@ async function findTools() {
         const categoryMatch = category === "all" || tool.Category === category;
         const paymentMatch = payment === "all" || tool.Payment === payment;
         const text = (
-            tool.Name + " " + 
+            (tool.Name || "") + " " + 
             (tool.Description || "") + " " + 
             (Array.isArray(tool.Tag) ? tool.Tag.join(" ") : "")
         ).toLowerCase();
@@ -58,7 +68,46 @@ function render(list) {
     });
 }
 
-// SUGGESTIONS LOGIC
+// --- ADD NEW TOOL LOGIC (Restored) ---
+async function addNewTool() {
+    const tool = {
+        Name: addName.value.trim(),
+        Category: addCat.value,
+        URL: addUrl.value.trim(),
+        Description: addDesc.value.trim(),
+        Tag: addTags.value ? addTags.value.split(",").map(t => t.trim()) : [],
+        Languages: addLang.value ? addLang.value.split(",").map(l => l.trim()) : [],
+        Payment: addPayment.value
+    };
+
+    if (!tool.Name || !tool.URL || !tool.Category) {
+        alert("Please fill in Name, URL, and Category.");
+        return;
+    }
+
+    const { error } = await db.from('tbl_AITools').insert([tool]);
+
+    if (error) {
+        console.error(error);
+        alert("Error adding tool: " + error.message);
+        return;
+    }
+
+    alert("Tool added successfully!");
+
+    // Clear Form
+    addName.value = "";
+    addUrl.value = "";
+    addDesc.value = "";
+    addTags.value = "";
+    addLang.value = "";
+    addCat.value = "";
+
+    // Refresh display
+    findTools();
+}
+
+// --- SUGGESTIONS LOGIC ---
 userInput.addEventListener("input", async () => {
     const val = userInput.value.toLowerCase();
     const box = document.getElementById("suggestions");
@@ -103,7 +152,6 @@ function closeSuggestions() {
     userInput.classList.remove('search-active');
 }
 
-// Close suggestions if user clicks outside
 document.addEventListener('click', (e) => {
     const box = document.getElementById("suggestions");
     if (!userInput.contains(e.target) && box && !box.contains(e.target)) {
@@ -111,7 +159,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// RESET
+// --- UI HELPERS ---
 resetBtn.onclick = () => {
     userInput.value = "";
     categorySelect.value = "all";
@@ -120,5 +168,4 @@ resetBtn.onclick = () => {
     findTools();
 };
 
-// TOP BUTTON
 topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
