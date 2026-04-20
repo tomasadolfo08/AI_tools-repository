@@ -30,7 +30,12 @@ async function findTools() {
     const filtered = data.filter(tool => {
         const categoryMatch = category === "all" || tool.Category === category;
         const paymentMatch = payment === "all" || tool.Payment === payment;
-        const text = (tool.Name + " " + tool.Description).toLowerCase();
+        const text = (
+            tool.Name + " " + 
+            (tool.Description || "") + " " + 
+            (Array.isArray(tool.Tag) ? tool.Tag.join(" ") : "")
+        ).toLowerCase();
+        
         return (!keyword || text.includes(keyword)) && categoryMatch && paymentMatch;
     });
 
@@ -75,6 +80,9 @@ userInput.addEventListener("input", async () => {
         box.innerHTML = matches.map(m =>
             `<div onclick="selectSuggestion('${m}')">${m}</div>`
         ).join("");
+        
+        // Show box and update input corners
+        box.style.display = "block"; 
         userInput.classList.add('search-active');
     } else {
         closeSuggestions();
@@ -84,23 +92,24 @@ userInput.addEventListener("input", async () => {
 function selectSuggestion(text) {
     userInput.value = text;
     closeSuggestions();
-    findTools(); // Trigger search immediately on click
+    findTools();
 }
 
 function closeSuggestions() {
     const box = document.getElementById("suggestions");
     box.innerHTML = "";
+    box.style.display = "none"; // Physically hides the box/border
     userInput.classList.remove('search-active');
 }
 
-// Click outside to close
+// Close suggestions if user clicks anywhere else
 document.addEventListener('click', (e) => {
     if (!userInput.contains(e.target) && !document.getElementById("suggestions").contains(e.target)) {
         closeSuggestions();
     }
 });
 
-// RESET & TOP
+// RESET
 resetBtn.onclick = () => {
     userInput.value = "";
     categorySelect.value = "all";
@@ -109,4 +118,5 @@ resetBtn.onclick = () => {
     findTools();
 };
 
+// TOP BUTTON
 topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
