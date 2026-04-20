@@ -38,74 +38,46 @@ header h1 {
     color: var(--accent-orange);
 }
 
+/* SEARCH BAR */
 .search-container {
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     gap: 25px;
     margin-top: 40px;
     max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
-    line-height: 0; 
     position: relative;
 }
 
-#categorySelect,
-#userInput,
-#priceFilter,
-header button {
-    height: 54px;           /* Fixed height is key */
-    padding: 0 30px;        /* Side padding only */
-    margin: 0;              /* Kills ghost margins */
-    border: none !important; /* Forces no border */
-    outline: none;
-    font-size: 0.95rem;
-    border-radius: 27px;    /* Half of height = perfect pill shape */
-    background-color: var(--white);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    /* Standardizes how height is calculated */
-    box-sizing: border-box; 
-    line-height: normal;    /* Resets text line-height */
+/* INPUT WRAPPER (IMPORTANT FOR SUGGESTIONS) */
+.input-wrapper {
+    position: relative;
+    flex: 2;
 }
 
 #userInput {
-    flex: 2;
-    /* Kills weird browser specific shadows/borders */
-    -webkit-appearance: none;
-    appearance: none;
+    width: 100%;
 }
 
-header button {
-    background-color: var(--accent-orange);
-    color: white;
-    justify-content: center;
-    font-weight: bold;
-    cursor: pointer;
-    min-width: 120px;
-    display: flex; /* Helps center text without line-height issues */
-    align-items: center;
-}
-
-#resetBtn {
-    background-color: #ccc;
-    color: black;
-}
-
-/* Common style for every piece in the search bar */
+/* SEARCH ELEMENTS */
 #categorySelect,
 #userInput,
 #priceFilter,
 header button {
-    padding: 16px 20px;
-    border: 1px solid transparent; 
-    outline: none;
+    height: 54px;
+    padding: 0 30px;
+    margin: 0;
     font-size: 0.95rem;
-    border-radius: 10px;  /* Individual rounded corners */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Floating shadow effect */
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    outline: none;
+    border: 1px solid transparent;
 }
 
+/* INPUT STYLES */
 #categorySelect {
     background: #f0f0f0;
     cursor: pointer;
@@ -114,34 +86,31 @@ header button {
 }
 
 #userInput {
-    flex: 2; /* Keeps the search box wider */
     background: var(--white);
     border: 1px solid #ddd;
 }
 
 #priceFilter {
     background: #fafafa;
-    color: var(--text-dark);
     cursor: pointer;
 }
 
-/* Buttons specifically */
+/* BUTTONS */
 header button {
     background-color: var(--accent-orange);
     color: white;
-    border: none;
     font-weight: bold;
     cursor: pointer;
     min-width: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 header button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-}
-
-html, body {
-    scroll-behavior: smooth;
 }
 
 #resetBtn {
@@ -247,36 +216,26 @@ footer {
     color: #888;
 }
 
-/* SUGGESTIONS */
+/* SUGGESTIONS (FIXED) */
 .suggestions-box {
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    gap: 25px;
-    margin-top: 40px;
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 0; 
     position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+
     background: var(--white);
     border: 1px solid #ddd;
-    left: 0;
-    transform: none;
-    width: 100%;
-    z-index: 1000;
-
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 
-    margin-top: 10px;
+    z-index: 1000;
     overflow: hidden;
 }
 
 .suggestions-box div {
     padding: 12px;
     cursor: pointer;
-    color: var(--text-dark); /* 🔥 THIS FIXES IT */
+    color: var(--text-dark);
     font-size: 0.95rem;
 }
 
@@ -288,7 +247,7 @@ footer {
     border-bottom: 1px solid #eee;
 }
 
-/* TOP BUTTON - PERFECT CIRCLE */
+/* TOP BUTTON */
 #topBtn {
     position: fixed;
     bottom: 20px;
@@ -296,17 +255,19 @@ footer {
     background: var(--accent-orange);
     color: white;
     border: none;
-    
-    /* To make a perfect circle, width and height must be equal */
     width: 50px;
     height: 50px;
-    border-radius: 50%; 
-    
-    padding: 0; /* Remove padding to avoid oval shape */
+    border-radius: 50%;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-size: 20px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* SMOOTH SCROLL */
+html, body {
+    scroll-behavior: smooth;
 }
