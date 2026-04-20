@@ -1,10 +1,9 @@
-alert("JS LOADED");
 const SUPABASE_URL = 'https://eorcxcwhvmpbiaewtuug.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVvcmN4Y3dodm1wYmlhZXd0dXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNTE3MzgsImV4cCI6MjA5MTcyNzczOH0.XjlCbmNIJZPisc3EhRrOlFKlihLUPBlmwrCV_JXiRuc';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// DOM
 const userInput = document.getElementById('userInput');
 const categorySelect = document.getElementById('categorySelect');
 const priceFilter = document.getElementById('priceFilter');
@@ -30,10 +29,10 @@ async function findTools() {
     const category = categorySelect.value;
     const payment = priceFilter.value;
 
-    let { data, error } = await supabase.from('tbl_AITools').select('*');
+    let { data, error } = await db.from('tbl_AITools').select('*');
 
     if (error) {
-        console.error("FETCH ERROR:", error);
+        console.error(error);
         resultsDiv.innerHTML = "<p>Error loading tools.</p>";
         return;
     }
@@ -99,20 +98,16 @@ async function addNewTool() {
         return;
     }
 
-    console.log("SENDING:", tool);
-
-    const { data, error } = await supabase.from('tbl_AITools').insert([tool]);
+    const { error } = await db.from('tbl_AITools').insert([tool]);
 
     if (error) {
-        console.error("INSERT ERROR:", error);
+        console.error(error);
         alert("Error: " + error.message);
         return;
     }
 
-    console.log("INSERT SUCCESS:", data);
     alert("Tool added!");
 
-    // clear form
     addName.value = "";
     addUrl.value = "";
     addDesc.value = "";
@@ -146,7 +141,7 @@ userInput.addEventListener("input", async () => {
         return;
     }
 
-    let { data } = await supabase.from('tbl_AITools').select('Name');
+    let { data } = await db.from('tbl_AITools').select('Name');
 
     if (!data) return;
 
