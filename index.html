@@ -1,113 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Tool Registry | Explorer</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="style.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tool Registry | Explorer</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
 <header>
-<div class="container">
-<h1>AI Tool Repository</h1>
-<p>Find the perfect artificial intelligence tools for your project</p>
+    <div class="container">
+        <h1>AI Tool Repository</h1>
+        <p>Find the perfect artificial intelligence tools for your project</p>
 
-<div class="search-container">
+        <div class="search-container">
+            <select id="categorySelect">
+                <option value="all">All Categories</option>
+                <option value="Writing & Content">Writing & Content</option>
+                <option value="Image & Art">Image & Art</option>
+                <option value="Video & Motion">Video & Motion</option>
+                <option value="Audio & Voice">Audio & Voice</option>
+                <option value="Code & Dev">Code & Dev</option>
+                <option value="Business & Productivity">Business & Productivity</option>
+                <option value="Marketing & Social">Marketing & Social</option>
+                <option value="Chatbots & Agents">Chatbots & Agents</option>
+                <option value="Research & Education">Research & Education</option>
+                <option value="Life & Fun">Life & Fun</option>
+            </select>
 
-<select id="categorySelect">
-<option value="all">All Categories</option>
-<option value="Writing & Content">Writing & Content</option>
-<option value="Image & Art">Image & Art</option>
-<option value="Video & Motion">Video & Motion</option>
-<option value="Audio & Voice">Audio & Voice</option>
-<option value="Code & Dev">Code & Dev</option>
-<option value="Business & Productivity">Business & Productivity</option>
-<option value="Marketing & Social">Marketing & Social</option>
-<option value="Chatbots & Agents">Chatbots & Agents</option>
-<option value="Research & Education">Research & Education</option>
-<option value="Life & Fun">Life & Fun</option>
-</select>
+            <div class="input-wrapper">
+                <input type="text" id="userInput" placeholder="Search...">
+                <div id="suggestions" class="suggestions-box"></div>
+            </div>
 
-<!-- ✅ FIXED WRAPPER -->
-<div class="input-wrapper">
-    <input type="text" id="userInput" placeholder="Search...">
-    <div id="suggestions" class="suggestions-box"></div>
-</div>
+            <select id="priceFilter">
+                <option value="all">All Prices</option>
+                <option value="Free">Free</option>
+                <option value="Freemium">Freemium</option>
+                <option value="Paid">Paid</option>
+            </select>
 
-<select id="priceFilter">
-<option value="all">All Prices</option>
-<option value="Free">Free</option>
-<option value="Freemium">Freemium</option>
-<option value="Paid">Paid</option>
-</select>
-
-<button onclick="findTools()">Search</button>
-<button id="resetBtn">Reset</button>
-
-</div>
-</div>
+            <button id="searchBtn">Search</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+    </div>
 </header>
 
 <main class="container">
+    <div id="results" class="results-grid">
+        <p class="placeholder-text">Loading tools...</p>
+    </div>
 
-<div id="results" class="results-grid">
-<p class="placeholder-text">Loading tools...</p>
-</div>
+    <hr class="section-divider">
 
-<hr class="section-divider">
+    <section class="add-section">
+        <h2>Add Tool</h2>
+        <div class="form-container">
+            <div class="input-row">
+                <input id="addName" type="text" placeholder="Tool Name">
+                <select id="addCat">
+                    <option value="">Select Category</option>
+                    <option value="Writing & Content">Writing & Content</option>
+                    <option value="Image & Art">Image & Art</option>
+                    <option value="Video & Motion">Video & Motion</option>
+                    <option value="Audio & Voice">Audio & Voice</option>
+                    <option value="Code & Dev">Code & Dev</option>
+                    <option value="Business & Productivity">Business & Productivity</option>
+                    <option value="Marketing & Social">Marketing & Social</option>
+                    <option value="Chatbots & Agents">Chatbots & Agents</option>
+                    <option value="Research & Education">Research & Education</option>
+                    <option value="Life & Fun">Life & Fun</option>
+                </select>
+            </div>
 
-<section class="add-section">
-<h2>Add Tool</h2>
+            <input id="addUrl" type="text" placeholder="URL (https://...)">
+            <input id="addTags" type="text" placeholder="Tags (comma separated)">
+            <input id="addLang" type="text" placeholder="Languages (comma separated)">
 
-<div class="form-container">
+            <select id="addPayment">
+                <option value="Free">Free</option>
+                <option value="Freemium">Freemium</option>
+                <option value="Paid">Paid</option>
+            </select>
 
-<div class="input-row">
-<input id="addName" type="text" placeholder="Tool Name">
-
-<select id="addCat">
-<option value="">Select Category</option>
-<option value="Writing & Content">Writing & Content</option>
-<option value="Image & Art">Image & Art</option>
-<option value="Video & Motion">Video & Motion</option>
-<option value="Audio & Voice">Audio & Voice</option>
-<option value="Code & Dev">Code & Dev</option>
-<option value="Business & Productivity">Business & Productivity</option>
-<option value="Marketing & Social">Marketing & Social</option>
-<option value="Chatbots & Agents">Chatbots & Agents</option>
-<option value="Research & Education">Research & Education</option>
-<option value="Life & Fun">Life & Fun</option>
-</select>
-</div>
-
-<input id="addUrl" type="text" placeholder="URL">
-<input id="addTags" type="text" placeholder="Tags">
-<input id="addLang" type="text" placeholder="Languages">
-
-<select id="addPayment">
-<option value="Free">Free</option>
-<option value="Freemium">Freemium</option>
-<option value="Paid">Paid</option>
-</select>
-
-<textarea id="addDesc" placeholder="Description"></textarea>
-
-<button class="btn-submit" onclick="addNewTool()">Add Tool</button>
-
-</div>
-</section>
-
+            <textarea id="addDesc" placeholder="Description"></textarea>
+            <button class="btn-submit" id="addToolBtn">Add Tool</button>
+        </div>
+    </section>
 </main>
 
 <footer>
-<div class="container">
-<p>AI Tool Repository</p>
-</div>
+    <div class="container">
+        <p>AI Tool Repository &copy; 2026</p>
+    </div>
 </footer>
 
 <button id="topBtn">↑</button>
