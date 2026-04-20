@@ -7,15 +7,6 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 const userInput = document.getElementById('userInput');
 const categorySelect = document.getElementById('categorySelect');
 const priceFilter = document.getElementById('priceFilter');
-
-const addName = document.getElementById('addName');
-const addCat = document.getElementById('addCat');
-const addUrl = document.getElementById('addUrl');
-const addTags = document.getElementById('addTags');
-const addLang = document.getElementById('addLang');
-const addPayment = document.getElementById('addPayment');
-const addDesc = document.getElementById('addDesc');
-
 const resultsDiv = document.getElementById('results');
 const resetBtn = document.getElementById('resetBtn');
 const topBtn = document.getElementById('topBtn');
@@ -23,7 +14,7 @@ const topBtn = document.getElementById('topBtn');
 // INIT
 window.addEventListener("DOMContentLoaded", findTools);
 
-// SEARCH
+// SEARCH LOGIC
 async function findTools() {
     const keyword = userInput.value.toLowerCase().trim();
     const category = categorySelect.value;
@@ -32,41 +23,22 @@ async function findTools() {
     let { data, error } = await db.from('tbl_AITools').select('*');
 
     if (error) {
-        console.error(error);
         resultsDiv.innerHTML = "<p>Error loading tools.</p>";
-        return;
-    }
-
-    if (!data || data.length === 0) {
-        resultsDiv.innerHTML = "<p>No tools found.</p>";
         return;
     }
 
     const filtered = data.filter(tool => {
         const categoryMatch = category === "all" || tool.Category === category;
         const paymentMatch = payment === "all" || tool.Payment === payment;
-
-        const text = (
-            tool.Name + " " +
-            tool.Description + " " +
-            (Array.isArray(tool.Tag) ? tool.Tag.join(" ") : "")
-        ).toLowerCase();
-
+        const text = (tool.Name + " " + tool.Description).toLowerCase();
         return (!keyword || text.includes(keyword)) && categoryMatch && paymentMatch;
     });
-
-    if (!filtered.length) {
-        resultsDiv.innerHTML = "<p>No tools found.</p>";
-        return;
-    }
 
     render(filtered);
 }
 
-// RENDER
 function render(list) {
-    resultsDiv.innerHTML = "";
-
+    resultsDiv.innerHTML = list.length ? "" : "<p>No tools found.</p>";
     list.forEach(t => {
         resultsDiv.innerHTML += `
         <div class="card">
@@ -81,68 +53,17 @@ function render(list) {
     });
 }
 
-// ADD TOOL
-async function addNewTool() {
-    const tool = {
-        Name: addName.value.trim(),
-        Category: addCat.value,
-        URL: addUrl.value.trim(),
-        Description: addDesc.value.trim(),
-        Tag: addTags.value ? addTags.value.split(",").map(t => t.trim()) : [],
-        Languages: addLang.value ? addLang.value.split(",").map(l => l.trim()) : [],
-        Payment: addPayment.value
-    };
-
-    if (!tool.Name || !tool.URL || !tool.Category) {
-        alert("Fill Name, URL and Category");
-        return;
-    }
-
-    const { error } = await db.from('tbl_AITools').insert([tool]);
-
-    if (error) {
-        console.error(error);
-        alert("Error: " + error.message);
-        return;
-    }
-
-    alert("Tool added!");
-
-    addName.value = "";
-    addUrl.value = "";
-    addDesc.value = "";
-    addTags.value = "";
-    addLang.value = "";
-    addCat.value = "";
-
-    findTools();
-}
-
-// RESET
-resetBtn.onclick = () => {
-    userInput.value = "";
-    categorySelect.value = "all";
-    priceFilter.value = "all";
-    findTools();
-};
-
-// TOP BUTTON
-topBtn.onclick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-// SUGGESTIONS
+// SUGGESTIONS LOGIC
 userInput.addEventListener("input", async () => {
     const val = userInput.value.toLowerCase();
     const box = document.getElementById("suggestions");
 
     if (!val) {
-        box.innerHTML = "";
+        closeSuggestions();
         return;
     }
 
     let { data } = await db.from('tbl_AITools').select('Name');
-
     if (!data) return;
 
     const matches = data
@@ -150,12 +71,42 @@ userInput.addEventListener("input", async () => {
         .filter(n => n.toLowerCase().startsWith(val))
         .slice(0, 5);
 
-    box.innerHTML = matches.map(m =>
-        `<div onclick="selectSuggestion('${m}')">${m}</div>`
-    ).join("");
+    if (matches.length > 0) {
+        box.innerHTML = matches.map(m =>
+            `<div onclick="selectSuggestion('${m}')">${m}</div>`
+        ).join("");
+        userInput.classList.add('search-active');
+    } else {
+        closeSuggestions();
+    }
 });
 
 function selectSuggestion(text) {
     userInput.value = text;
-    document.getElementById("suggestions").innerHTML = "";
+    closeSuggestions();
+    findTools(); // Trigger search immediately on click
 }
+
+function closeSuggestions() {
+    const box = document.getElementById("suggestions");
+    box.innerHTML = "";
+    userInput.classList.remove('search-active');
+}
+
+// Click outside to close
+document.addEventListener('click', (e) => {
+    if (!userInput.contains(e.target) && !document.getElementById("suggestions").contains(e.target)) {
+        closeSuggestions();
+    }
+});
+
+// RESET & TOP
+resetBtn.onclick = () => {
+    userInput.value = "";
+    categorySelect.value = "all";
+    priceFilter.value = "all";
+    closeSuggestions();
+    findTools();
+};
+
+topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
