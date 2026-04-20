@@ -7,9 +7,8 @@
     --white: #ffffff;
 }
 
-/* GLOBAL RESET */
 * {
-    box-sizing: border-box; /* Crucial for perfect alignment */
+    box-sizing: border-box;
 }
 
 html, body {
@@ -54,17 +53,18 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
     margin-top: 20px; 
-    max-width: 750px;
+    max-width: 950px; /* Increased slightly to allow the bar to be longer */
     margin-left: auto;
     margin-right: auto;
     position: relative;
+    padding: 0 20px;
 }
 
 .input-wrapper {
     position: relative;
-    flex: 2;
+    flex: 4; /* Increased from 2 to 4 to make the search bar much longer than the dropdowns */
 }
 
 /* SEARCH ELEMENTS */
@@ -87,7 +87,7 @@ header button {
     background: var(--white);
 }
 
-/* GOOGLE LOOK ACTIVE STATE */
+/* ACTIVE STATE FOR GOOGLE LOOK */
 #userInput.search-active {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -98,7 +98,7 @@ header button {
 /* SUGGESTIONS BOX */
 .suggestions-box {
     position: absolute;
-    top: 100%; /* Sits exactly at the bottom edge of input wrapper */
+    top: 100%;
     left: 0;
     width: 100%;
     background: var(--white);
@@ -108,8 +108,6 @@ header button {
     box-shadow: 0 8px 15px rgba(0,0,0,0.15);
     z-index: 1000;
     overflow: hidden;
-    
-    /* FIX: Completely hidden until JS triggers it */
     display: none; 
 }
 
@@ -129,9 +127,9 @@ header button {
     border-bottom: 1px solid #eee;
 }
 
-/* OTHER STYLES */
-#categorySelect { background: #f0f0f0; cursor: pointer; font-weight: 600; }
-#priceFilter { background: #fafafa; cursor: pointer; }
+/* DROPDOWNS & BUTTONS */
+#categorySelect { flex: 1.2; background: #f0f0f0; cursor: pointer; font-weight: 600; }
+#priceFilter { flex: 1; background: #fafafa; cursor: pointer; }
 
 header button {
     background-color: var(--accent-orange);
@@ -149,6 +147,7 @@ header button:hover {
 
 #resetBtn { background: #e0e0e0; color: #333; }
 
+/* RESULTS & CARDS */
 .results-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -187,6 +186,7 @@ header button:hover {
     font-weight: bold;
 }
 
+/* ADD SECTION */
 .add-section {
     background: var(--white);
     padding: 40px;
