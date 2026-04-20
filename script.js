@@ -81,7 +81,6 @@ userInput.addEventListener("input", async () => {
             `<div onclick="selectSuggestion('${m}')">${m}</div>`
         ).join("");
         
-        // Show box and update input corners
         box.style.display = "block"; 
         userInput.classList.add('search-active');
     } else {
@@ -97,14 +96,17 @@ function selectSuggestion(text) {
 
 function closeSuggestions() {
     const box = document.getElementById("suggestions");
-    box.innerHTML = "";
-    box.style.display = "none"; // Physically hides the box/border
+    if(box) {
+        box.innerHTML = "";
+        box.style.display = "none";
+    }
     userInput.classList.remove('search-active');
 }
 
-// Close suggestions if user clicks anywhere else
+// Close suggestions if user clicks outside
 document.addEventListener('click', (e) => {
-    if (!userInput.contains(e.target) && !document.getElementById("suggestions").contains(e.target)) {
+    const box = document.getElementById("suggestions");
+    if (!userInput.contains(e.target) && box && !box.contains(e.target)) {
         closeSuggestions();
     }
 });
