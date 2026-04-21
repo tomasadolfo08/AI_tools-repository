@@ -6,55 +6,28 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // SELECTORS
 const userInput = document.getElementById('userInput');
-const categoryDropdown = document.getElementById('categoryDropdown');
 const categoryOptions = document.getElementById('categoryOptions');
 const selectedCountText = document.getElementById('selectedCount');
 const priceFilter = document.getElementById('priceFilter');
 const resultsDiv = document.getElementById('results');
-const resetBtn = document.getElementById('resetBtn');
 const searchBtn = document.getElementById('searchBtn');
-const topBtn = document.getElementById('topBtn');
-
-// ADD FORM SELECTORS
-const addName = document.getElementById('addName');
-const addCat = document.getElementById('addCat');
-const addUrl = document.getElementById('addUrl');
-const addTags = document.getElementById('addTags');
-const addLang = document.getElementById('addLang');
-const addPayment = document.getElementById('addPayment');
-const addDesc = document.getElementById('addDesc');
 const addToolBtn = document.getElementById('addToolBtn');
+
+// --- VISUAL: HEADER SCROLL EFFECT ---
+window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    header.classList.toggle('scrolled', window.scrollY > 50);
+});
 
 window.addEventListener("DOMContentLoaded", findTools);
 
-// --- MULTISELECT UI LOGIC ---
-categoryDropdown.addEventListener('click', (e) => {
-    categoryOptions.classList.toggle('active');
-    e.stopPropagation();
-});
-
-document.addEventListener('click', () => {
-    categoryOptions.classList.remove('active');
-});
-
-categoryOptions.addEventListener('click', (e) => {
-    e.stopPropagation(); // Prevents closing when clicking checkboxes
-});
-
-categoryOptions.addEventListener('change', () => {
-    const selected = Array.from(categoryOptions.querySelectorAll('input:checked')).map(cb => cb.value);
-    if (selected.length === 0) {
-        selectedCountText.innerText = "All Categories";
-    } else if (selected.length === 1) {
-        selectedCountText.innerText = selected[0];
-    } else {
-        selectedCountText.innerText = `${selected.length} Categories`;
-    }
-});
-
 // --- SEARCH & RENDER ---
 async function findTools() {
+    // VISUAL: Show Skeleton Loaders while fetching
+    resultsDiv.innerHTML = Array(6).fill('<div class="skeleton-card"></div>').join('');
+
     let { data, error } = await db.from('tbl_AITools').select('*');
+    
     if (error) {
         resultsDiv.innerHTML = "<p>Error loading tools.</p>";
         return;
@@ -77,9 +50,11 @@ async function findTools() {
 
 function render(list) {
     resultsDiv.innerHTML = list.length ? "" : "<p>No tools found.</p>";
-    list.forEach(t => {
+    list.forEach((t, index) => {
+        // VISUAL: Staggered animation delay
+        const delay = index * 0.05;
         resultsDiv.innerHTML += `
-        <div class="card">
+        <div class="card" style="animation-delay: ${delay}s">
             <div>
                 <span class="badge">${t.Category || "AI"}</span>
                 <h3>${t.Name}</h3>
@@ -91,88 +66,5 @@ function render(list) {
     });
 }
 
-// --- ADD TOOL ---
-async function addNewTool() {
-    const newTool = {
-        Name: addName.value.trim(),
-        Category: addCat.value,
-        URL: addUrl.value.trim(),
-        Description: addDesc.value.trim(),
-        Tag: addTags.value ? addTags.value.split(',').map(s => s.trim()) : [],
-        Languages: addLang.value ? addLang.value.split(',').map(s => s.trim()) : [],
-        Payment: addPayment.value
-    };
-
-    if (!newTool.Name || !newTool.URL || !newTool.Category) {
-        alert("Please fill in Name, URL, and Category!");
-        return;
-    }
-
-    const { error } = await db.from('tbl_AITools').insert([newTool]);
-
-    if (error) {
-        alert("Error: " + error.message);
-    } else {
-        alert("Tool added successfully!");
-        [addName, addUrl, addTags, addLang, addDesc].forEach(el => el.value = "");
-        addCat.value = "";
-        findTools(); 
-    }
-}
-
-// --- SUGGESTIONS ---
-userInput.addEventListener('input', async () => {
-    const val = userInput.value.toLowerCase();
-    const box = document.getElementById('suggestions');
-
-    if (!val) {
-        closeSuggestions();
-        return;
-    }
-
-    let { data } = await db.from('tbl_AITools').select('Name');
-    const matches = data
-        .map(d => d.Name)
-        .filter(n => n.toLowerCase().startsWith(val))
-        .slice(0, 5);
-
-    if (matches.length > 0) {
-        box.innerHTML = matches.map(m => `<div class="suggestion-item">${m}</div>`).join("");
-        box.style.display = "block";
-        userInput.classList.add('search-active');
-
-        document.querySelectorAll('.suggestion-item').forEach(item => {
-            item.onclick = () => {
-                userInput.value = item.innerText;
-                closeSuggestions();
-            };
-        });
-    } else {
-        closeSuggestions();
-    }
-});
-
-function closeSuggestions() {
-    const box = document.getElementById('suggestions');
-    box.style.display = "none";
-    userInput.classList.remove('search-active');
-}
-
-// --- EVENT LISTENERS ---
 if(searchBtn) searchBtn.addEventListener('click', findTools);
 if(addToolBtn) addToolBtn.addEventListener('click', addNewTool);
-
-resetBtn.addEventListener('click', () => {
-    userInput.value = "";
-    priceFilter.value = "all";
-    categoryOptions.querySelectorAll('input').forEach(cb => cb.checked = false);
-    selectedCountText.innerText = "All Categories";
-    closeSuggestions();
-    findTools();
-});
-
-document.addEventListener('click', (e) => {
-    if (!userInput.contains(e.target)) closeSuggestions();
-});
-
-topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
