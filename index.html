@@ -6,6 +6,7 @@
     <title>AI Tool Registry | Explorer</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -15,13 +16,12 @@
         <p>Find the perfect artificial intelligence tools for your project</p>
 
         <div class="search-container">
-
-            <!-- ✅ SELECT STYLE MULTI DROPDOWN -->
-            <div class="select-dropdown">
-                <div class="select-btn" id="categoryBtn">All Categories</div>
-
-                <div class="select-menu" id="categoryMenu">
-                    <label><input type="checkbox" value="all" checked> All Categories</label>
+            <div class="custom-multiselect" id="categoryDropdown">
+                <div class="select-box">
+                    <span id="selectedCount">All Categories</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="options-container" id="categoryOptions">
                     <label><input type="checkbox" value="Writing & Content"> Writing & Content</label>
                     <label><input type="checkbox" value="Image & Art"> Image & Art</label>
                     <label><input type="checkbox" value="Video & Motion"> Video & Motion</label>
@@ -54,8 +54,55 @@
 </header>
 
 <main class="container">
-    <div id="results" class="results-grid"></div>
+    <div id="results" class="results-grid">
+        <p class="placeholder-text">Loading tools...</p>
+    </div>
+
+    <hr class="section-divider">
+
+    <section class="add-section">
+        <h2>Add Tool</h2>
+        <div class="form-container">
+            <div class="input-row">
+                <input id="addName" type="text" placeholder="Tool Name">
+                <select id="addCat">
+                    <option value="">Select Category</option>
+                    <option value="Writing & Content">Writing & Content</option>
+                    <option value="Image & Art">Image & Art</option>
+                    <option value="Video & Motion">Video & Motion</option>
+                    <option value="Audio & Voice">Audio & Voice</option>
+                    <option value="Code & Dev">Code & Dev</option>
+                    <option value="Business & Productivity">Business & Productivity</option>
+                    <option value="Marketing & Social">Marketing & Social</option>
+                    <option value="Chatbots & Agents">Chatbots & Agents</option>
+                    <option value="Research & Education">Research & Education</option>
+                    <option value="Life & Fun">Life & Fun</option>
+                </select>
+            </div>
+
+            <input id="addUrl" type="text" placeholder="URL (https://...)">
+            <input id="addTags" type="text" placeholder="Tags (comma separated)">
+            <input id="addLang" type="text" placeholder="Languages (comma separated)">
+
+            <select id="addPayment">
+                <option value="Free">Free</option>
+                <option value="Freemium">Freemium</option>
+                <option value="Paid">Paid</option>
+            </select>
+
+            <textarea id="addDesc" placeholder="Description"></textarea>
+            <button class="btn-submit" id="addToolBtn">Add Tool</button>
+        </div>
+    </section>
 </main>
+
+<footer>
+    <div class="container">
+        <p>AI Tool Repository &copy; 2026</p>
+    </div>
+</footer>
+
+<button id="topBtn">↑</button>
 
 <script src="script.js"></script>
 </body>
