@@ -16,19 +16,24 @@
         <p>Find the perfect artificial intelligence tools for your project</p>
 
         <div class="search-container">
-            <select id="categorySelect">
-                <option value="all">All Categories</option>
-                <option value="Writing & Content">Writing & Content</option>
-                <option value="Image & Art">Image & Art</option>
-                <option value="Video & Motion">Video & Motion</option>
-                <option value="Audio & Voice">Audio & Voice</option>
-                <option value="Code & Dev">Code & Dev</option>
-                <option value="Business & Productivity">Business & Productivity</option>
-                <option value="Marketing & Social">Marketing & Social</option>
-                <option value="Chatbots & Agents">Chatbots & Agents</option>
-                <option value="Research & Education">Research & Education</option>
-                <option value="Life & Fun">Life & Fun</option>
-            </select>
+
+            <!-- ✅ MULTI SELECT DROPDOWN -->
+            <div class="multi-select">
+                <div class="select-box" id="selectBox">All Categories</div>
+                <div class="checkboxes" id="checkboxes">
+                    <label><input type="checkbox" value="all" checked> All Categories</label>
+                    <label><input type="checkbox" value="Writing & Content"> Writing & Content</label>
+                    <label><input type="checkbox" value="Image & Art"> Image & Art</label>
+                    <label><input type="checkbox" value="Video & Motion"> Video & Motion</label>
+                    <label><input type="checkbox" value="Audio & Voice"> Audio & Voice</label>
+                    <label><input type="checkbox" value="Code & Dev"> Code & Dev</label>
+                    <label><input type="checkbox" value="Business & Productivity"> Business & Productivity</label>
+                    <label><input type="checkbox" value="Marketing & Social"> Marketing & Social</label>
+                    <label><input type="checkbox" value="Chatbots & Agents"> Chatbots & Agents</label>
+                    <label><input type="checkbox" value="Research & Education"> Research & Education</label>
+                    <label><input type="checkbox" value="Life & Fun"> Life & Fun</label>
+                </div>
+            </div>
 
             <div class="input-wrapper">
                 <input type="text" id="userInput" placeholder="Search...">
@@ -66,7 +71,7 @@
                     <option value="Image & Art">Image & Art</option>
                     <option value="Video & Motion">Video & Motion</option>
                     <option value="Audio & Voice">Audio & Voice</option>
-                    <option value="Code & Dev">Code & Dev</option>
+                    <option value="Code & Dev"> Code & Dev</option>
                     <option value="Business & Productivity">Business & Productivity</option>
                     <option value="Marketing & Social">Marketing & Social</option>
                     <option value="Chatbots & Agents">Chatbots & Agents</option>
