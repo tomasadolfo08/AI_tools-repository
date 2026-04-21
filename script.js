@@ -10,54 +10,58 @@ const priceFilter = document.getElementById('priceFilter');
 const resultsDiv = document.getElementById('results');
 const resetBtn = document.getElementById('resetBtn');
 const searchBtn = document.getElementById('searchBtn');
-const topBtn = document.getElementById('topBtn');
 
-// MULTI SELECT
-const checkboxes = document.getElementById("checkboxes");
-const selectBox = document.getElementById("selectBox");
+// DROPDOWN
+const categoryBtn = document.getElementById("categoryBtn");
+const categoryMenu = document.getElementById("categoryMenu");
 
-// ADD FORM
-const addName = document.getElementById('addName');
-const addCat = document.getElementById('addCat');
-const addUrl = document.getElementById('addUrl');
-const addTags = document.getElementById('addTags');
-const addLang = document.getElementById('addLang');
-const addPayment = document.getElementById('addPayment');
-const addDesc = document.getElementById('addDesc');
-const addToolBtn = document.getElementById('addToolBtn');
-
-window.addEventListener("DOMContentLoaded", findTools);
-
-// DROPDOWN TOGGLE
-selectBox.onclick = () => {
-    checkboxes.style.display =
-        checkboxes.style.display === "block" ? "none" : "block";
+// OPEN / CLOSE
+categoryBtn.onclick = () => {
+    categoryMenu.style.display =
+        categoryMenu.style.display === "block" ? "none" : "block";
 };
+
+// CLOSE IF CLICK OUTSIDE
+document.addEventListener("click", (e) => {
+    if (!categoryBtn.contains(e.target) && !categoryMenu.contains(e.target)) {
+        categoryMenu.style.display = "none";
+    }
+});
+
+// UPDATE LABEL TEXT
+document.querySelectorAll('#categoryMenu input').forEach(cb => {
+    cb.addEventListener('change', () => {
+        const selected = Array.from(
+            document.querySelectorAll('#categoryMenu input:checked')
+        ).map(c => c.value);
+
+        if (selected.includes("all") || selected.length === 0) {
+            categoryBtn.innerText = "All Categories";
+        } else {
+            categoryBtn.innerText = selected.length + " selected";
+        }
+    });
+});
 
 // SEARCH
 async function findTools() {
-    let { data, error } = await db.from('tbl_AITools').select('*');
-    if (error) {
-        resultsDiv.innerHTML = "<p>Error loading tools.</p>";
-        return;
-    }
+    let { data } = await db.from('tbl_AITools').select('*');
 
     const keyword = userInput.value.toLowerCase().trim();
     const payment = priceFilter.value;
 
     const selectedCategories = Array.from(
-        document.querySelectorAll('#checkboxes input:checked')
+        document.querySelectorAll('#categoryMenu input:checked')
     ).map(cb => cb.value);
 
     const filtered = data.filter(t => {
         const catMatch =
             selectedCategories.includes("all") ||
-            selectedCategories.length === 0 ||
             selectedCategories.includes(t.Category);
 
         const payMatch = payment === "all" || t.Payment === payment;
 
-        const text = `${t.Name} ${t.Description} ${Array.isArray(t.Tag) ? t.Tag.join(' ') : ''}`.toLowerCase();
+        const text = `${t.Name} ${t.Description}`.toLowerCase();
 
         return (!keyword || text.includes(keyword)) && catMatch && payMatch;
     });
@@ -67,36 +71,28 @@ async function findTools() {
 
 // RENDER
 function render(list) {
-    resultsDiv.innerHTML = list.length ? "" : "<p>No tools found.</p>";
-    list.forEach(t => {
-        resultsDiv.innerHTML += `
+    resultsDiv.innerHTML = list.map(t => `
         <div class="card">
-            <div>
-                <span class="badge">${t.Category || "AI"}</span>
-                <h3>${t.Name}</h3>
-                <p>${t.Description || ""}</p>
-                <p><strong>${t.Payment}</strong> • ${Array.isArray(t.Languages) ? t.Languages.join(", ") : t.Languages || ""}</p>
-            </div>
-            <a href="${t.URL}" target="_blank" class="btn-link">Visit Tool →</a>
-        </div>`;
-    });
+            <h3>${t.Name}</h3>
+            <p>${t.Description}</p>
+        </div>
+    `).join('');
 }
 
-// RESET
-resetBtn.addEventListener('click', () => {
+// EVENTS
+searchBtn.onclick = findTools;
+
+resetBtn.onclick = () => {
     userInput.value = "";
     priceFilter.value = "all";
 
-    document.querySelectorAll('#checkboxes input').forEach(cb => {
+    document.querySelectorAll('#categoryMenu input').forEach(cb => {
         cb.checked = cb.value === "all";
     });
 
-    selectBox.innerText = "All Categories";
+    categoryBtn.innerText = "All Categories";
 
     findTools();
-});
+};
 
-// OTHER EVENTS
-searchBtn.addEventListener('click', findTools);
-
-topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+window.onload = findTools;
