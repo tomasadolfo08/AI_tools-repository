@@ -4,67 +4,43 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// SELECTORS
 const userInput = document.getElementById('userInput');
 const categoryDropdown = document.getElementById('categoryDropdown');
 const categoryOptions = document.getElementById('categoryOptions');
 const selectedCountText = document.getElementById('selectedCount');
 const priceFilter = document.getElementById('priceFilter');
 const resultsDiv = document.getElementById('results');
-const resetBtn = document.getElementById('resetBtn');
 const searchBtn = document.getElementById('searchBtn');
-const topBtn = document.getElementById('topBtn');
-const mainHeader = document.getElementById('mainHeader');
-
-// ADD FORM SELECTORS
-const addName = document.getElementById('addName');
-const addCat = document.getElementById('addCat');
-const addUrl = document.getElementById('addUrl');
-const addTags = document.getElementById('addTags');
-const addLang = document.getElementById('addLang');
-const addPayment = document.getElementById('addPayment');
-const addDesc = document.getElementById('addDesc');
 const addToolBtn = document.getElementById('addToolBtn');
+const resetBtn = document.getElementById('resetBtn');
+const topBtn = document.getElementById('topBtn');
 
-// SCROLL EFFECT FOR HEADER
-window.addEventListener('scroll', () => {
-    if(window.scrollY > 50) {
-        mainHeader.classList.add('scrolled');
-    } else {
-        mainHeader.classList.remove('scrolled');
-    }
-});
+const addName = document.getElementById('addName'),
+      addCat = document.getElementById('addCat'),
+      addUrl = document.getElementById('addUrl'),
+      addTags = document.getElementById('addTags'),
+      addLang = document.getElementById('addLang'),
+      addPayment = document.getElementById('addPayment'),
+      addDesc = document.getElementById('addDesc');
 
 window.addEventListener("DOMContentLoaded", findTools);
 
-// --- MULTISELECT UI LOGIC ---
+// --- UI LOGIC ---
 categoryDropdown.addEventListener('click', (e) => {
     categoryOptions.classList.toggle('active');
     e.stopPropagation();
 });
 
-document.addEventListener('click', () => {
-    categoryOptions.classList.remove('active');
-});
-
-categoryOptions.addEventListener('click', (e) => {
-    e.stopPropagation(); // Prevents closing when clicking checkboxes
-});
+document.addEventListener('click', () => categoryOptions.classList.remove('active'));
 
 categoryOptions.addEventListener('change', () => {
     const selected = Array.from(categoryOptions.querySelectorAll('input:checked')).map(cb => cb.value);
-    if (selected.length === 0) {
-        selectedCountText.innerText = "All Categories";
-    } else if (selected.length === 1) {
-        selectedCountText.innerText = selected[0];
-    } else {
-        selectedCountText.innerText = `${selected.length} Categories`;
-    }
+    selectedCountText.innerText = selected.length === 0 ? "All Categories" : 
+                                 selected.length === 1 ? selected[0] : `${selected.length} Categories`;
 });
 
-// --- SEARCH & RENDER ---
+// --- CORE FUNCTIONS ---
 async function findTools() {
-    // VISUAL: Render skeleton loaders while fetching data
     resultsDiv.innerHTML = Array(6).fill('<div class="skeleton-card"></div>').join('');
 
     let { data, error } = await db.from('tbl_AITools').select('*');
@@ -91,9 +67,7 @@ async function findTools() {
 function render(list) {
     resultsDiv.innerHTML = list.length ? "" : "<p style='grid-column: 1/-1; text-align: center;'>No tools found.</p>";
     list.forEach((t, index) => {
-        // VISUAL: Stagger the animation delay so they cascade in
-        const delay = index * 0.05; 
-        
+        const delay = index * 0.05;
         resultsDiv.innerHTML += `
         <div class="card" style="animation-delay: ${delay}s">
             <div>
@@ -107,7 +81,6 @@ function render(list) {
     });
 }
 
-// --- ADD TOOL ---
 async function addNewTool() {
     const newTool = {
         Name: addName.value.trim(),
@@ -125,70 +98,38 @@ async function addNewTool() {
     }
 
     const { error } = await db.from('tbl_AITools').insert([newTool]);
-
-    if (error) {
-        alert("Error: " + error.message);
-    } else {
+    if (error) alert("Error: " + error.message);
+    else {
         alert("Tool added successfully!");
         [addName, addUrl, addTags, addLang, addDesc].forEach(el => el.value = "");
         addCat.value = "";
-        findTools(); 
+        findTools();
     }
 }
 
-// --- SUGGESTIONS ---
+// --- SUGGESTIONS & RESET ---
 userInput.addEventListener('input', async () => {
     const val = userInput.value.toLowerCase();
     const box = document.getElementById('suggestions');
-
-    if (!val) {
-        closeSuggestions();
-        return;
-    }
+    if (!val) { box.style.display = "none"; return; }
 
     let { data } = await db.from('tbl_AITools').select('Name');
-    const matches = data
-        .map(d => d.Name)
-        .filter(n => n.toLowerCase().startsWith(val))
-        .slice(0, 5);
+    const matches = data.map(d => d.Name).filter(n => n.toLowerCase().startsWith(val)).slice(0, 5);
 
     if (matches.length > 0) {
         box.innerHTML = matches.map(m => `<div class="suggestion-item">${m}</div>`).join("");
         box.style.display = "block";
-        userInput.classList.add('search-active');
-
         document.querySelectorAll('.suggestion-item').forEach(item => {
-            item.onclick = () => {
-                userInput.value = item.innerText;
-                closeSuggestions();
-            };
+            item.onclick = () => { userInput.value = item.innerText; box.style.display = "none"; findTools(); };
         });
-    } else {
-        closeSuggestions();
-    }
+    } else box.style.display = "none";
 });
 
-function closeSuggestions() {
-    const box = document.getElementById('suggestions');
-    box.style.display = "none";
-    userInput.classList.remove('search-active');
-}
-
-// --- EVENT LISTENERS ---
-if(searchBtn) searchBtn.addEventListener('click', findTools);
-if(addToolBtn) addToolBtn.addEventListener('click', addNewTool);
-
-resetBtn.addEventListener('click', () => {
-    userInput.value = "";
-    priceFilter.value = "all";
+searchBtn.onclick = findTools;
+addToolBtn.onclick = addNewTool;
+resetBtn.onclick = () => {
+    userInput.value = ""; priceFilter.value = "all";
     categoryOptions.querySelectorAll('input').forEach(cb => cb.checked = false);
-    selectedCountText.innerText = "All Categories";
-    closeSuggestions();
-    findTools();
-});
-
-document.addEventListener('click', (e) => {
-    if (!userInput.contains(e.target)) closeSuggestions();
-});
-
+    selectedCountText.innerText = "All Categories"; findTools();
+};
 topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
