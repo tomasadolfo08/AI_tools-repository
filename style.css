@@ -192,6 +192,15 @@ header button, .btn-submit {
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+/* Specific styling for Add Tool button to match header buttons */
+.btn-submit {
+    width: 100%;
+    padding: 16px; /* Makes it thick like the search bar buttons */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
 header button:hover, .btn-submit:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 15px rgba(255, 127, 0, 0.4);
